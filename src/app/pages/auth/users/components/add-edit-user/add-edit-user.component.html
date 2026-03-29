@@ -1,0 +1,84 @@
+<p-tabs value="UserTabs.General">
+    <p-tablist>
+        <p-tab value="UserTabs.General">{{ 'البيانات الأساسية' }}</p-tab>
+        @if (pageType === 'edit') {
+        <p-tab value="UserTabs.Roles">{{ 'الصلاحيات' }}</p-tab>
+        }
+    </p-tablist>
+    <p-tabpanels>
+        <p-tabpanel value="UserTabs.General">
+            <div class="page-wrapper">
+                <p-card class="px-4 pt-2 pb-4 m-0">
+
+                    @if (form) {
+                    <form method="post" class="row" [formGroup]="form">
+
+
+                        <div class="col-lg-4">
+                            <app-prime-input-text [formGroup]="form" controlName="userName" [label]="'اسم المستخدم'">
+                            </app-prime-input-text>
+                        </div>
+                        <div class="col-lg-4">
+                            <app-prime-input-text [formGroup]="form" controlName="email" [label]="'البريد اللالكتروني'">
+                            </app-prime-input-text>
+                        </div>
+                        @if (pageType === 'add') {
+                        <div class="col-lg-4">
+                            <app-prime-input-text [formGroup]="form" controlName="password" contentType="password"
+                                [label]="'الرقم السري'">
+                            </app-prime-input-text>
+                        </div>
+                        }
+                        @if (pageType === 'edit') {
+                        <div class="col-lg-4">
+                            <app-prime-input-text [formGroup]="form" contentType="password" controlName="oldPassword"
+                                [label]="'الرقم السري الحالي'">
+                            </app-prime-input-text>
+                            @if (form.get('oldPassword')?.invalid && form.get('oldPassword')?.touched) {
+                            <small class="text-red-500">هذا الحقل مطلوب</small>
+                            }
+                        </div>
+                        <div class="col-lg-4">
+                            <app-prime-input-text [formGroup]="form" contentType="password" controlName="newPassword"
+                                [label]="'الرقم السري الجديد'">
+                            </app-prime-input-text>
+                            @if (form.get('newPassword')?.invalid && form.get('newPassword')?.touched) {
+                            <small class="text-red-500">هذا الحقل مطلوب</small>
+                            }
+                        </div>
+                        <div class="col-lg-4">
+                            <app-prime-input-text [formGroup]="form" contentType="password"
+                                controlName="confirmPassword" [label]="'تأكيد الرقم السري'">
+                            </app-prime-input-text>
+
+                        </div>
+                        }
+                       
+                        <div class="col-lg-6">
+                            <label class="mb-2">{{ 'الجهة' }}</label>
+                            <app-prime-autocomplete [field]="'nameAr'" [selectedOption]="selectedOrganization"
+                                [suggestions]="filteredOrganizations" [formGroup]="form"
+                                (onSelect)="onOrganizationSelect($event)" (handleMethod)="getOrganizations.bind(this)"
+                                (handleMethod)="getOrganizations($event)"></app-prime-autocomplete>
+                        </div>
+                            <div class="col-lg-6">
+                            <label class="mb-2">{{ 'الموظف' }}</label>
+                            <app-prime-autocomplete [field]="'nameAr'" [selectedOption]="selectedEmployee"
+                                [suggestions]="filteredEmployees" [formGroup]="form"
+                                (onSelect)="onEmployeeSelect($event)"  (handleMethod)="getEmployees.bind(this)"
+                                (handleMethod)="getEmployees($event)">
+                            </app-prime-autocomplete>
+                        </div>
+                    </form>
+                    }
+                    @if (form) {
+                       <app-submit-buttons [isSubmitDisabled]="form.invalid" [submitButtonText]="pageType === 'add' ? 'ACTIONS.SUBMIT' : 'ACTIONS.SAVE'" (submit)="submit()" (cancel)="redirect()"> </app-submit-buttons>
+                    }
+                </p-card>
+            </div>
+        </p-tabpanel>
+        <p-tabpanel value="UserTabs.Roles">
+            <app-user-roles [userId]="userId"></app-user-roles>
+        </p-tabpanel>
+    </p-tabpanels>
+</p-tabs>

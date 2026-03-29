@@ -1,0 +1,43 @@
+<div [ngClass]="this.dialogService.dialogComponentRefMap.size > 0 ? '' : 'card systemBackgroundDialog'">
+    <div class="card">
+
+        <div class="title-container">
+
+            @if(this.dialogService.dialogComponentRefMap.size == 0) {
+            <div class="mb-3">
+                <h1 class="m-0 font-24 font-bold text-primary">{{ pageTitle }}</h1>
+            </div>
+            }
+
+            @if (form) {
+            <form method="post" class="row" [formGroup]="form">
+
+             
+                     <div class="col-lg-6">
+                        <app-prime-input-text [formGroup]="form" controlName="nameAr" validatorLanguageType="ar"
+                            [label]="'الاسم بالعربية'">
+                        </app-prime-input-text>
+                    </div>
+
+                   <div class="col-lg-6">
+                        <app-prime-input-text [formGroup]="form" controlName="nameEn" validatorLanguageType="en"
+                            [label]="'الاسم بالانجليزية'">
+                        </app-prime-input-text>
+                    </div>
+                
+                   <div class="col-lg-6">
+                    <label class="mb-2">{{ 'الادارة' }}</label>
+                    <app-prime-autocomplete [field]="'nameAr'" [selectedOption]="selectedModule"
+                        [suggestions]="filteredModules" [formGroup]="form" (onSelect)="onModuleSelect($event)"
+                        [lazy]="false" (handleMethod)="getModules($event)"></app-prime-autocomplete>
+                </div>
+            </form>
+            }
+            @if (form) {
+            <app-submit-buttons class="mt-4" [isSubmitDisabled]="form.invalid"
+                [submitButtonText]="pageType === 'add' ? 'ACTIONS.SUBMIT' : 'ACTIONS.SAVE'" (submit)="submit()"
+                (cancel)="redirect()">
+            </app-submit-buttons>
+            }
+        </div>
+    </div>

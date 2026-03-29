@@ -1,0 +1,100 @@
+ <div class="page-wrapper">
+                <p-card class="px-4 pt-2 pb-4 m-0">
+                    @if (form) {
+                        <form method="post" class="row" [formGroup]="form">
+                          
+                                <div class="field col">
+                                    <app-prime-input-text [formGroup]="form" controlName="nameAr" [label]="'الاسم بالعربية '"> </app-prime-input-text>
+                                </div>
+
+
+                                <div class="field col">
+                                    <app-prime-input-text [formGroup]="form" controlName="nameEn" [label]="'الاسم بالانجليزية '"> </app-prime-input-text>
+                                </div>
+
+                                
+                                <div class="field col">
+                                    <app-prime-input-text [formGroup]="form" controlName="moduleName" [label]="'اسم الادارة '"> </app-prime-input-text>
+                                </div>
+                        
+                        
+                              
+                         
+                                <!-- <div class="field col">
+                                    <app-prime-check-box [formGroup]="form" controlName="isUser" groupName="showGroup" [binary]="true" [label]="'مستخدم نشط'"> </app-prime-check-box>
+                                </div>
+
+                          
+                                <div class="field col">
+                                    <app-prime-check-box [formGroup]="form" controlName="isManager" groupName="showGroup" [binary]="true" [label]="' مدير'"> </app-prime-check-box>
+                                </div> -->
+
+                               
+ <!-- Permissions Card -->
+    @if(pageType === 'edit'){
+    <div class="form-card mt-3">
+      <div class="form-container p-4">
+        <div class="row g-3">
+          <div class="col-2">
+            <h5 class="m-0 regular text-primary">الصفحة</h5>
+          </div>
+          <div class="col-2">
+            <h5 class="m-0 regular text-primary">الكل</h5>
+          </div>
+          <div class="col-2">
+            <h5 class="m-0 regular text-primary">اضافة</h5>
+          </div>
+          <div class="col-2">
+            <h5 class="m-0 regular text-primary">تعديل</h5>
+          </div>
+          <div class="col-2">
+            <h5 class="m-0 regular text-primary">عرض</h5>
+          </div>
+          <div class="col-2">
+            <h5 class="m-0 regular text-primary">حذف</h5>
+          </div>
+        </div>
+        <ng-container formArrayName="rolePagePermissions">
+          @for (rolePagePermission of rolePagePermissions.controls; track rolePagePermission ; let i = $index) {
+          <div class="row" [formGroupName]="i">
+           
+            <div class="col-2 mt-3">
+              <span class="d-block mt-2">{{ rolePagePermission.value.page }}</span>
+            </div>
+          
+            <div class="col-2 mt-4">
+              <app-prime-check-box
+                [formGroup]="getFormGroup(rolePagePermission)"
+                controlName="allSelected"
+                (onChangeOption)="checlAllPermissions($event, getFormGroup(rolePagePermission), i)"
+                [binary]="true">
+              </app-prime-check-box>
+            </div>
+
+            <ng-container formArrayName="pagePermissions" class="col-lg-2">
+              @for (pagePermission of getPagePermissions(i).controls; track pagePermission; let j = $index) {
+              <div class="col-2 mt-4">
+                <app-prime-check-box
+  [formGroup]="getFormGroup(pagePermission)"
+  controlName="isSelected"
+  [binary]="true"
+  (onChangeOption)="syncAllSelected(i)">
+</app-prime-check-box>
+              </div>
+            }
+          </ng-container>
+        </div>
+        }
+      </ng-container>
+      </div>
+    </div>
+    }
+                               
+                        
+                        </form>
+                    }
+                </p-card>
+                @if (form) {
+                    <app-submit-buttons [isSubmitDisabled]="form.invalid" [submitButtonText]="pageType === 'add' ? 'ACTIONS.SUBMIT' : 'ACTIONS.SAVE'" (submit)="submit()" (cancel)="redirect()"> </app-submit-buttons>
+                }
+            </div>

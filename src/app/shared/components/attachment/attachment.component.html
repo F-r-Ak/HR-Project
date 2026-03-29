@@ -1,0 +1,132 @@
+<label class="text-middle mt-1" for="attachment"
+  >{{ label }}
+  @if (formGroup.get(controlName)?.hasError('required')) {
+  <span>*</span>
+  }
+</label>
+
+@if (formGroup) {
+<div class="attachment" id="attachment">
+  <div class="attachment__header mb-4" appDragdrop (onFileDropped)="onUploadFile($event)">
+    <div class="d-flex align-items-center mb-2">
+      @if (isFailed) {
+      <span class="failed DefaultParagraph">{{ "فشل تحميل المرفق" }}</span>
+      }
+    </div>
+
+    <div class="upload d-flex flex-column justify-content-center align-self-center" [ngClass]="{ disabled: isHidden }">
+      <div class="DefaultParagraph text-center">
+        <input
+          type="button"
+          class="fw-bold px-0"
+          value="اضافة مرفق"
+          [disabled]="isHidden || maxFilesNumbers === selectedFiles.length"
+          (click)="formGroup.get(controlName)?.enabled ? file.click() : ''" />
+      </div>
+
+      <div class="text-center">
+        <div class="SmallSubTitle">
+          {{ "يدعم::" }}
+          @for (item of allowedTypes; track $index) {
+          <span>
+            @if ($index < allowedTypes.length - 2) {
+            <span>{{ item.type | uppercase }}, </span>
+            } @if ($index === allowedTypes.length - 2) {
+            <span>{{ item.type | uppercase }}</span>
+            } @if ($index === allowedTypes.length - 1) {
+            <span> {{ "و"}} {{ item.type | uppercase }}</span>
+            }
+          </span>
+          }
+        </div>
+        <div class="SmallSubTitle">{{ "العدد الأقصى للملفات المسموح برفعها: " }}{{ maxFilesNumbers }}</div>
+      </div>
+    </div>
+
+    <input
+      #file
+      class="form-control textField d-none"
+      type="file"
+      [multiple]="isMultiple"
+      [accept]="acceptedTypes"
+      (change)="onUploadFile($event)" />
+  </div>
+
+  <div class="attachment__files-wrapper">
+    @for (file of selectedFiles; track $index) {
+
+    <div [ngClass]="{ 'mb-3': $index < selectedFiles.length - 1 }">
+      <div class="attachment__file d-flex align-items-center justify-content-between" [ngClass]="{ 'bg-error': isFailed }">
+        <div class="file-details d-flex align-items-center">
+          @if (filesExtensions.includes(file.extension)) {
+          <i class="bx bxs-cloud-download text-gradient-success font-26"></i>
+          } @if (imageExtensions.includes(file.extension)) {
+          <img [src]="file.url" />
+          }
+
+          <span class="DefaultParagraph w-max text-truncate mx-2 file-name" for="file">{{ file.fileName }}</span>
+          @if (!isFailed && file.attachmentDisplaySize) {
+          <span class="CardSubTitle mx-3 file-size"> ( {{ file.attachmentDisplaySize }} ) </span>
+          }
+        </div>
+
+        <span class="d-flex align-items-center justify-content-center">
+          @if (!isFailed && file.isSuccess) {
+          <i class="pi pi-trash text-error font-26 icons" (click)="file.isSuccess ? removeFile($index, file) : ''"></i>
+          } @if (!file.isSuccess) {
+          <i class="pi pi-spin pi-spinner d-block font-24"></i>
+          } @if (isFailed) {
+          <i class="pi pi-cloud-upload text-white font-26 icons" (click)="saveFile(uploadedFiles)"></i>
+          }
+        </span>
+      </div>
+    </div>
+    } @if (formGroup.get(controlName)?.dirty) {
+    <div class="invalid-feedback-wrapper">
+      @if (formGroup.get(controlName)?.errors?.['maximumFiles']) {
+      <div class="invalid-feedback m-0 d-block">
+        {{
+          "الحد الأقصى للملفات هو "
+        }}
+        {{ maxFilesNumbers }}
+      </div>
+      } @if (formGroup.get(controlName)?.errors?.['fileSelected']) {
+      <div class="invalid-feedback m-0 d-block">
+        {{ "لقد قمت بالفعل بتحميل هذا الملف من قبل" }}
+      </div>
+      } @if ( formGroup.get(controlName)?.errors?.['maximumSize'] ) {
+      <div class="invalid-feedback m-0 d-block">
+        {{ "الحد الأقصى للملفات هو " }} {{ uploadedFile.maxSize }}
+        {{"ميجا بايت"}}
+      </div>
+      } @if (formGroup.get(controlName)?.errors?.['required']) {
+      <div class="invalid-feedback m-0 d-block">
+        {{ "REQUIRED" }}
+      </div>
+      } @if (formGroup.get(controlName)?.errors?.['allowedTypes']) {
+      <div class="invalid-feedback m-0 d-block">
+        {{
+          "الأنواع المسموح بها هي "
+        }}
+
+        @for (item of allowedTypes; track $index) {
+        <span>
+          @if ($index < allowedTypes.length - 2) {
+          <span>{{ item.type | uppercase }}, </span>
+          } @if ($index === allowedTypes.length - 2) {
+          <span>{{ item.type | uppercase }}</span>
+          } @if ($index === allowedTypes.length - 1) {
+          <span>
+            {{ 'و' }}
+            {{ item.type | uppercase }}
+          </span>
+          }
+        </span>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>
+}

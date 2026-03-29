@@ -1,0 +1,535 @@
+.layout-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 6rem 2rem 0 2rem;
+    transition: margin-left var(--layout-section-transition-duration);
+}
+
+.layout-main {
+    flex: 1 1 auto;
+    padding-bottom: 2rem;
+}
+
+.attachment-section {
+  margin-top: 1rem;
+
+  .attachment-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+}
+
+:host ::ng-deep {
+  // Global p-fileUpload styling for add/edit modes
+  .p-fileupload {
+    &.p-component {
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+      position: relative;
+
+      &:hover {
+        border-color: #007ad9;
+        background: #f0f8ff;
+      }
+
+      &.p-fileupload-highlight {
+        border-color: #007ad9;
+        background: #e6f3ff;
+      }
+
+      // Add mode specific styling
+      &.add-mode {
+        border-color: #28a745;
+
+        &:hover {
+          border-color: #1e7e34;
+          background: #f0fff4;
+        }
+
+        .p-fileupload-buttonbar .p-button {
+          background: #28a745;
+          border-color: #28a745;
+
+          &:hover {
+            background: #1e7e34;
+            border-color: #1e7e34;
+          }
+        }
+      }
+
+      // Edit mode specific styling
+      &.edit-mode {
+        border-color: #ffc107;
+
+        &:hover {
+          border-color: #e0a800;
+          background: #fffbf0;
+        }
+
+        .p-fileupload-buttonbar .p-button {
+          background: #ffc107;
+          border-color: #ffc107;
+          color: #212529;
+
+          &:hover {
+            background: #e0a800;
+            border-color: #e0a800;
+            color: #212529;
+          }
+        }
+      }
+    }
+
+    .p-fileupload-buttonbar {
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-bottom: 1rem;
+
+      .p-button {
+        background: #007ad9;
+        border: 1px solid #007ad9;
+        border-radius: 6px;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 122, 217, 0.2);
+
+        &:hover {
+          background: #005b9f;
+          border-color: #005b9f;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 8px rgba(0, 122, 217, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: 0 2px 4px rgba(0, 122, 217, 0.2);
+        }
+
+        .p-button-label {
+          font-weight: 500;
+        }
+
+        .p-button-icon {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    .p-fileupload-content {
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin-top: 0;
+      min-height: 60px;
+    }
+
+    // Empty state styling
+    .p-fileupload-empty {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #6c757d;
+      border: 1px dashed #dee2e6;
+      border-radius: 6px;
+      background: #fafbfc;
+
+      .empty-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
+        opacity: 0.4;
+        display: block;
+      }
+
+      .empty-text {
+        font-size: 0.875rem;
+        margin: 0;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+// Enhanced attachment list styling for all components
+.attachment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+
+    &:hover {
+      background: #a8a8a8;
+    }
+  }
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  position: relative;
+
+  &:hover {
+    border-color: #007ad9;
+    box-shadow: 0 2px 8px rgba(0, 122, 217, 0.15);
+    transform: translateY(-1px);
+  }
+
+  // File type indicator
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #007ad9;
+    border-radius: 8px 0 0 8px;
+  }
+
+  // Different colors for different file types
+  &.pdf-file::before { background: #dc3545; }
+  &.image-file::before { background: #28a745; }
+  &.doc-file::before { background: #007bff; }
+  &.excel-file::before { background: #198754; }
+
+  .file-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+
+    .file-icon {
+      margin-right: 0.75rem;
+      font-size: 1.25rem;
+      color: #6c757d;
+      flex-shrink: 0;
+    }
+
+    .file-details {
+      flex: 1;
+      min-width: 0;
+
+      .file-name {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #495057;
+        margin: 0 0 0.25rem 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .file-size {
+        font-size: 0.75rem;
+        color: #6c757d;
+        margin: 0;
+      }
+    }
+  }
+
+  span, a {
+    flex: 1;
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 1rem;
+
+    &:hover {
+      color: #007ad9;
+    }
+  }
+
+  a {
+    color: #007ad9;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+
+    // &::before {
+    //   content: "📎";
+    //   margin-right: 0.5rem;
+    //   font-size: 0.875rem;
+    // }
+
+    &:hover {
+      color: #005b9f;
+      text-decoration: underline;
+    }
+  }
+
+  .file-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+}
+
+.remove-icon {
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  &:hover {
+    color: #dc3545;
+    background: #f8f9fa;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Empty state styling
+.attachment-empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #6c757d;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  background: #fafbfc;
+  margin-top: 1rem;
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+    display: block;
+  }
+
+  .empty-text {
+    font-size: 0.875rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 500;
+  }
+
+  .empty-subtext {
+    font-size: 0.75rem;
+    margin: 0;
+    opacity: 0.7;
+  }
+}
+
+// Mode-specific labels and indicators
+.mode-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+
+  &.add-mode {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+
+    &::before {
+      content: "➕";
+      margin-right: 0.5rem;
+      font-size: 0.625rem;
+    }
+  }
+
+  &.edit-mode {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+
+    &::before {
+      content: "✏️";
+      margin-right: 0.5rem;
+      font-size: 0.625rem;
+    }
+  }
+}
+
+// File upload progress styling
+.p-fileupload .p-progressbar {
+  height: 6px;
+  border-radius: 3px;
+  background: #e9ecef;
+  margin-top: 0.5rem;
+
+  .p-progressbar-value {
+    background: linear-gradient(90deg, #007ad9, #0056b3);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+}
+
+// Existing files section styling
+.existing-files {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+
+  h6 {
+    margin: 0 0 1rem 0;
+    color: #495057;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: "📁";
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .attachment-item {
+    padding: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    .file-info {
+      width: 100%;
+      margin-right: 0;
+    }
+
+    .file-actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    span, a {
+      font-size: 0.8rem;
+      margin-right: 0;
+    }
+  }
+
+  :host ::ng-deep {
+    .p-fileupload {
+      &.p-component {
+        padding: 0.75rem;
+      }
+
+      .p-fileupload-buttonbar .p-button {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .attachment-empty-state {
+    padding: 2rem 1rem;
+
+    .empty-icon {
+      font-size: 2rem;
+    }
+  }
+
+  .existing-files {
+    padding: 0.75rem;
+  }
+}
+
+// Dark mode support (if needed)
+@media (prefers-color-scheme: dark) {
+  .p-fileupload.p-component {
+    background: #2d3748;
+    border-color: #4a5568;
+
+    &:hover {
+      background: #374151;
+    }
+  }
+
+  .attachment-item {
+    background: #374151;
+    border-color: #4a5568;
+    color: #e2e8f0;
+
+    &:hover {
+      background: #4a5568;
+    }
+  }
+
+  .attachment-empty-state {
+    background: #2d3748;
+    border-color: #4a5568;
+    color: #a0aec0;
+  }
+
+  .existing-files {
+    background: #2d3748;
+    border-color: #4a5568;
+  }
+}
+
+// Different styling for edit mode
+.edit-mode {
+  .attachment-section {
+    .attachment-label {
+      color: #28a745;
+    }
+  }
+}
+
+// Different styling for add mode
+.add-mode {
+  .attachment-section {
+    .attachment-label {
+      color: #007ad9;
+    }
+  }
+}
+

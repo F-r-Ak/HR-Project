@@ -1,0 +1,79 @@
+<!-- <p>add-edit-test works!</p> -->
+<div [ngClass]="this.dialogService.dialogComponentRefMap.size > 0 ? '' : 'card systemBackgroundDialog'">
+    <div class="card">
+
+        <div class="title-container">
+
+            @if(this.dialogService.dialogComponentRefMap.size == 0) {
+            <div class="mb-3">
+                <h1 class="m-0 font-24 font-bold text-primary">{{ pageTitle }}</h1>
+            </div>
+            }
+
+            @if (form) {
+            <form method="post" class="row" [formGroup]="form">
+                <div class="p-formgrid grid">
+                    <div class="field col">
+                        <app-prime-input-text [formGroup]="form" controlName="code" contentType="number"
+                            [label]="'الكود'">
+                        </app-prime-input-text>
+                    </div>
+
+                    <div class="field col"></div>
+                </div>
+
+                <div class="p-formgrid grid">
+                    <div class="field col">
+                        <app-prime-input-text [formGroup]="form" controlName="nameAr" validatorLanguageType="ar"
+                            [label]="'الاسم بالعربية'">
+                        </app-prime-input-text>
+                    </div>
+
+                    <div class="field col">
+                        <app-prime-input-text [formGroup]="form" controlName="nameEn" validatorLanguageType="en"
+                            [label]="'الاسم بالانجليزية'">
+                        </app-prime-input-text>
+                    </div>
+                </div>
+
+                <div class="p-formgrid grid">
+
+                    <div class="field col">
+                        <app-prime-datepicker [formGroup]="form" controlName="lastMaintenanceDate" [mode]="'date'"
+                            [label]="'تاريخ اخر صيانة'"> </app-prime-datepicker>
+                    </div>
+
+                    <div class="field col">
+                        <label class="text-middle font-14 font-bold  m-1">المركز التابع لها</label>
+                        <app-prime-autocomplete [field]="'nameAr'" [selectedOption]="selectedCity"
+                            [suggestions]="filteredCities" [formGroup]="form" (onSelect)="onCitySelect($event)"
+                            [getMethod]="getCities.bind(this)"
+                            (handleMethod)="getCities($event)"></app-prime-autocomplete>
+                    </div>
+
+                </div>
+
+                <div class="p-formgrid grid">
+
+                    <div class="field col col-lg-6 d-flex align-items-center">
+                        <app-prime-check-box [formGroup]="form" controlName="isActive" groupName="showGroup"
+                            [binary]="true" [label]="'نشط'"> </app-prime-check-box>
+                    </div>
+
+                    <div class="field col">
+                        <app-prime-radio-button [formGroup]="form" controlName="color" [value]="'red'" [binary]="true"
+                        label="red"></app-prime-radio-button>
+                    </div>
+                </div>
+
+
+            </form>
+            }
+            @if (form) {
+            <app-submit-buttons class="mt-4" [isSubmitDisabled]="form.invalid"
+                [submitButtonText]="pageType === 'add' ? 'ACTIONS.SUBMIT' : 'ACTIONS.SAVE'" (submit)="submit()"
+                (cancel)="redirect()">
+            </app-submit-buttons>
+            }
+        </div>
+    </div>

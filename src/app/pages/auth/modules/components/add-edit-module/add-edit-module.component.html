@@ -1,0 +1,48 @@
+<div [ngClass]="this.dialogService.dialogComponentRefMap.size > 0 ? '' : 'card systemBackgroundDialog'">
+
+    <p-tabs value="moduleTabsEnum.General">
+        <p-tablist>
+            <p-tab value="moduleTabsEnum.General">{{ 'البيانات الأساسية' }}</p-tab>
+            @if (pageType === 'edit' ) {
+            <p-tab value="moduleTabsEnum.Pages">{{ ' الشاشات التابعة لها' }}</p-tab>
+            }
+        </p-tablist>
+        <p-tabpanels>
+            <p-tabpanel value="moduleTabsEnum.General">
+                <div class="page-wrapper">
+                    <div class="card">
+
+                        <div class="title-container">
+
+                            @if(this.dialogService.dialogComponentRefMap.size == 0) {
+                            <div class="mb-3">
+                                <h1 class="m-0 font-24 font-bold text-primary">{{ pageTitle }}</h1>
+                            </div>
+                            }
+
+                            @if (form) {
+                            <form method="post" class="row" [formGroup]="form">
+                                <div class="col-lg-4">
+                                    <app-prime-input-text [formGroup]="form" controlName="nameAr"
+                                        [label]="'اسم الادارة بالعربي'">
+                                    </app-prime-input-text>
+                                </div>
+                            </form>
+                            }
+                            @if (form) {
+                            <app-submit-buttons class="mt-4" [isSubmitDisabled]="form.invalid"
+                                [submitButtonText]="pageType === 'add' ? 'ACTIONS.SUBMIT' : 'ACTIONS.SAVE'"
+                                (submit)="submit()" (cancel)="redirect()">
+                            </app-submit-buttons>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </p-tabpanel>
+            @if (pageType === 'edit') {
+            <p-tabpanel value="moduleTabsEnum.Pages">
+                <app-pages [authModuleId]="authModuleId"></app-pages>
+            </p-tabpanel>
+            }
+        </p-tabpanels>
+    </p-tabs>

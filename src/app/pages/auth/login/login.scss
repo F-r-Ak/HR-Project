@@ -1,0 +1,161 @@
+@import 'variables';
+
+/**  =====================
+      Authentication css start
+==========================  **/
+.auth-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-width: 100%;
+    min-height: 100vh;
+
+    a,
+    p > a {
+        color: $primary-light;
+        font-weight: 600;
+        font-family:
+            Droid Arabic naskh,
+            serif;
+    }
+
+    .btn-auth-gen {
+        .btn-icon {
+            width: 140px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+
+            small {
+                font-size: 15px;
+            }
+        }
+    }
+
+    .card {
+        margin-bottom: 0;
+        border-radius: 8px;
+        background-image: linear-gradient(45deg, #232158, #d69d53);
+        direction: rtl;
+    }
+
+    > div {
+        z-index: 5;
+    }
+
+    .auth-content {
+        position: relative;
+        width: 390px;
+        padding: 15px;
+
+        &.multyform,
+        &.subscribe {
+            width: 750px;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        max-width: 360px;
+    }
+
+    @media only screen and (max-width: 575px) {
+        .card {
+            .card-body {
+                padding: 30px 15px;
+            }
+        }
+    }
+
+    .auth-icon {
+        font-size: 30px;
+
+        &:before {
+            background: $primary;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+
+    &.offline {
+        background-image: none;
+
+        &:before {
+            display: none;
+        }
+    }
+
+    .auth-bg {
+        .r {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+
+            &:first-child {
+                top: -100px;
+                right: -175px;
+                background: $primary;
+            }
+
+            &:last-child {
+                left: -175px;
+                bottom: -100px;
+                background: $primary-light;
+            }
+
+            &.s {
+                width: 20px;
+                height: 20px;
+
+                &:nth-child(2) {
+                    top: 150px;
+                    right: -220px;
+                    background: $primary-light;
+                }
+
+                &:nth-child(3) {
+                    left: -220px;
+                    bottom: 150px;
+                    background: $primary;
+                }
+            }
+
+            &:nth-child(odd) {
+                animation: floating 7s infinite;
+
+                .viewAr {
+                    position: absolute;
+                    top: 35%;
+                    right: 4%;
+                }
+            }
+
+            &:nth-child(even) {
+                animation: floating 9s infinite;
+
+                .viewEn {
+                    position: absolute;
+                    top: 35%;
+                    left: 1%;
+                }
+            }
+        }
+    }
+}
+
+@keyframes floating {
+    from {
+        transform: rotate(0deg) translate(-10px) rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg) translate(-10px) rotate(-360deg);
+    }
+}
+
+/**====== Authentication css end ======**/

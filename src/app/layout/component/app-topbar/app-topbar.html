@@ -1,0 +1,264 @@
+<div class="layout-topbar" dir="rtl">
+    <div class="layout-topbar-logo-container">
+        <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
+            <i class="pi pi-bars"></i>
+        </button>
+        <a class="layout-topbar-logo" routerLink="/">
+            <svg width="60" height="80" viewBox="0 0 87 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Your existing SVG content -->
+            </svg>
+            <h4 class="light">نظام</h4>
+        </a>
+
+        <!-- Client Type Indicator (for debugging/development) -->
+        <div *ngIf="false" class="client-type-badge"> <!-- Set to true for debugging -->
+            <span class="client-type-label" [ngClass]="{
+                'adder': visitorNot.getClientType() === 'Adder',
+                'updater': visitorNot.getClientType() === 'Updater',
+                'general': visitorNot.getClientType() === 'General'
+            }">
+                {{ getClientTypeDisplay() }}
+            </span>
+        </div>
+
+        <!-- Notification Dropdown -->
+        <div class="relative mr-5">
+            <button
+                class="layout-topbar-action notification-button"
+                pStyleClass="@next"
+                enterFromClass="hidden"
+                enterActiveClass="animate-scalein"
+                leaveToClass="hidden"
+                leaveActiveClass="animate-fadeout"
+                [hideOnOutsideClick]="true"
+                [title]="'الإشعارات - حالة الاتصال: ' + (isConnected() ? 'متصل' : 'غير متصل')"
+            >
+                <i class="pi pi-bell relative"></i>
+                <p-badge
+                    *ngIf="unreadNotifications > 0"
+                    [value]="unreadNotifications"
+                    styleClass="notification-badge"
+                    severity="danger">
+                </p-badge>
+                <!-- Connection status indicator -->
+                <span class="connection-status" [ngClass]="{
+                    'connected': isConnected(),
+                    'disconnected': !isConnected()
+                }"></span>
+            </button>
+
+            <!-- Notification Dropdown Content -->
+            <div class="notification-dropdown hidden">
+                <div class="notification-header">
+                    <div class="notification-header-top">
+                        <h4>الإشعارات ({{unreadNotifications}})</h4>
+                        <div class="notification-actions">
+                            <button
+                                *ngIf="unreadNotifications > 0"
+                                class="mark-all-read"
+                                (click)="markAllAsRead()"
+                                title="تعيين جميع الإشعارات كمقروءة">
+                                <i class="pi pi-check-circle"></i>
+                                تعيين الكل كمقروء
+                            </button>
+                            <button
+                                class="refresh-notifications"
+                                (click)="testConnection()"
+                                title="اختبار الاتصال وتحديث الإشعارات">
+                                <i class="pi pi-refresh"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Notification type filter -->
+                    <div class="notification-filter" *ngIf="clientRole === 'Both'">
+                        <div class="filter-buttons">
+                            <button
+                                [class.active]="activeFilter === 'all'"
+                                (click)="activeFilter = 'all'">
+                                الكل
+                            </button>
+                            <button
+                                [class.active]="activeFilter === 'new'"
+                                (click)="activeFilter = 'new'">
+                                <i class="pi pi-plus-circle"></i> جديد
+                            </button>
+                            <button
+                                [class.active]="activeFilter === 'updated'"
+                                (click)="activeFilter = 'updated'">
+                                <i class="pi pi-sync"></i> تحديث
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Client role info -->
+                    <div class="client-role-info">
+                        <small>
+                            <i class="pi pi-info-circle"></i>
+                            <span *ngIf="clientRole === 'Adder'">أنت تستقبل إشعارات الزوار الجدد فقط</span>
+                            <span *ngIf="clientRole === 'Updater'">أنت تستقبل إشعارات تحديث الزوار فقط</span>
+                            <span *ngIf="clientRole === 'Both'">أنت تستقبل جميع إشعارات الزوار</span>
+                        </small>
+                    </div>
+                </div>
+
+                <div class="notification-list">
+                    <!-- Filtered notifications based on client role -->
+                    <ng-container *ngIf="getFilteredNotifications().length > 0; else emptyState">
+                        <div
+                            *ngFor="let notification of getFilteredNotifications()"
+                            class="notification-item"
+                            [class.unread]="!notification.read"
+                            [class.new-visitor]="notification.type === 'new-visitor'"
+                            [class.updated-visitor]="notification.type === 'updated-visitor'"
+                            (click)="handleNotificationClick(notification)">
+
+                            <div class="notification-icon">
+                                <i [class]="getNotificationIcon(notification)"></i>
+                            </div>
+
+                            <div class="notification-content">
+                                <div class="notification-title-row">
+                                    <div class="notification-title">
+                                        {{ getNotificationTitle(notification) }}
+                                    </div>
+                                    <div class="notification-type-badge" [ngClass]="notification.type">
+                                        <span *ngIf="notification.type === 'new-visitor'">جديد</span>
+                                        <span *ngIf="notification.type === 'updated-visitor'">تحديث</span>
+                                        <span *ngIf="notification.type === 'general'">عام</span>
+                                    </div>
+                                </div>
+
+                                <div class="notification-message">
+                                    {{ getNotificationMessage(notification) }}
+                                </div>
+
+                                <div class="notification-footer-row">
+                                    <div class="notification-time">
+                                        <i class="pi pi-clock"></i>
+                                        {{ formatNotificationTime(notification) }}
+                                    </div>
+                                    <div class="notification-visitor-info" *ngIf="notification.visitorName">
+                                        <i class="pi pi-user"></i>
+                                        {{ notification.visitorName }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="!notification.read" class="notification-dot"></div>
+
+                            <!-- Quick action buttons -->
+                            <div class="notification-actions" (click)="$event.stopPropagation()">
+                                <button
+                                    *ngIf="!notification.read"
+                                    class="mark-read-btn"
+                                    (click)="handleNotificationClick(notification)"
+                                    title="تعيين كمقروء">
+                                    <i class="pi pi-check"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Empty state template -->
+                    <ng-template #emptyState>
+                        <div class="empty-notifications">
+                            <i class="pi pi-bell-slash"></i>
+                            <p>لا توجد إشعارات حالياً</p>
+                            <small *ngIf="clientRole !== 'Both'">
+                                <span *ngIf="clientRole === 'Adder'">
+                                    سيتم عرض إشعارات الزوار الجدد هنا
+                                </span>
+                                <span *ngIf="clientRole === 'Updater'">
+                                    سيتم عرض إشعارات تحديث الزوار هنا
+                                </span>
+                            </small>
+                            <button class="test-connection-btn" (click)="testConnection()">
+                                <i class="pi pi-refresh"></i>
+                                اختبار الاتصال
+                            </button>
+                        </div>
+                    </ng-template>
+                </div>
+
+                <div class="notification-footer">
+                    <div class="connection-status-info">
+                        <span [ngClass]="{
+                            'status-connected': isConnected(),
+                            'status-disconnected': !isConnected()
+                        }">
+                            <i class="pi" [ngClass]="{
+                                'pi-check-circle': isConnected(),
+                                'pi-times-circle': !isConnected()
+                            }"></i>
+                            {{ isConnected() ? 'متصل' : 'غير متصل' }}
+                        </span>
+                        <small *ngIf="visitorNot.getConnectionId()">
+                            ID: {{ visitorNot.getConnectionId()?.substring(0, 8) }}...
+                        </small>
+                    </div>
+                    <button class="view-all" (click)="viewAllNotifications()">
+                        <i class="pi pi-list"></i>
+                        عرض جميع الإشعارات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-topbar-actions">
+        <!-- Connection Status Display (optional) -->
+        <div class="connection-status-display" *ngIf="false"> <!-- Set to true for debugging -->
+            <span class="status-dot" [ngClass]="{
+                'connected': isConnected(),
+                'disconnected': !isConnected()
+            }"></span>
+            <span class="status-text">
+                {{ isConnected() ? 'SignalR متصل' : 'SignalR غير متصل' }}
+            </span>
+        </div>
+
+        <div class="layout-config-menu">
+            <!-- Your existing config menu buttons -->
+        </div>
+
+        <div class="layout-topbar-menu hidden lg:block">
+            <div class="layout-topbar-menu-content">
+                    <div class="user-display mr-4" *ngIf="userName">
+                        <i class="pi pi-user"></i>
+                        <span class="username" style="color: aliceblue;">{{ userName }}</span>
+                    </div>
+                <!-- Optional: Client role switcher for testing -->
+                <div class="client-role-switcher" *ngIf="false"> <!-- Set to true for testing -->
+                    <div class="dropdown">
+                        <button class="layout-topbar-action">
+                            <i class="pi pi-sliders-h"></i>
+                            <span>نوع العميل</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <button (click)="switchClientRole('Adder')" [class.active]="clientRole === 'Adder'">
+                                <i class="pi pi-plus"></i> مضيف الزوار
+                            </button>
+                            <button (click)="switchClientRole('Updater')" [class.active]="clientRole === 'Updater'">
+                                <i class="pi pi-sync"></i> محرر الزوار
+                            </button>
+                            <button (click)="switchClientRole('Both')" [class.active]="clientRole === 'Both'">
+                                <i class="pi pi-th-large"></i> الكل
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="layout-topbar-action light" (click)="openChangePassword()" title="تغيير كلمة المرور">
+                    <i class="pi pi-lock"></i>
+                    <span>كلمة المرور</span>
+                </button>
+
+                <button type="button" class="layout-topbar-action" (click)="handleLogOut()" title="تسجيل الخروج">
+                    <i class="pi pi-sign-out"></i>
+                    <span>خروج</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

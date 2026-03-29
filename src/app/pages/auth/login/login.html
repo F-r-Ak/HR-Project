@@ -1,0 +1,37 @@
+   <div class="auth-wrapper">
+            <div class="auth-content">
+                <div class="auth-bg">
+                    <span class="r">
+                        <img class="viewAr" src="/assets/img/viewAr.png" alt="" />
+                    </span>
+                    <span class="r s"></span>
+                    <span class="r s"></span>
+                    <span class="r">
+                        <img class="viewEn" src="/assets/img/viewEn.png" alt="" />
+                    </span>
+                </div>
+                <div class="card">
+                    <form  [formGroup]="form" style="direction: rtl;">
+                    <div class="mb-4">
+                        <img class="logo-auth" src="/assets/img/title (2).png" alt="" />
+                    </div>
+                    <div dir="rtl" class="p-6 ">
+                        <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">البريد الالكترونى</label>
+                        <div class="col-lg-12">
+                            <app-prime-input-text [formGroup]="form" contentType="email" controlName="email"> </app-prime-input-text>
+                        </div>
+                        <label for="Password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">الرقم السرى</label>
+                        <div class="col-lg-12">
+                            <app-prime-input-text [formGroup]="form" contentType="password" controlName="password"> </app-prime-input-text>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 mb-8 gap-8">
+                           
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <p-button label="دخول" styleClass="p-login-button" (click)="login()"></p-button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>

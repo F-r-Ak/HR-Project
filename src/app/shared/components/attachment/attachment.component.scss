@@ -1,0 +1,147 @@
+@import 'index';
+
+.attachment {
+  &__header {
+    div.d-flex {
+      .label {
+        color: $dark;
+      }
+
+      .file-label {
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.67;
+        color: #55565e;
+      }
+
+      svg {
+        margin-inline-end: 0.5rem;
+        fill: $dark;
+      }
+
+      .failed {
+        color: $error-light;
+        margin-inline-start: 2px;
+      }
+    }
+
+    .upload {
+      background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='3' ry='3' stroke='%23DCDDE5FF' stroke-width='2' stroke-dasharray='1%2c 5' stroke-dashoffset='6' stroke-linecap='square'/%3e%3c/svg%3e");
+      box-shadow: 0 0 10px 0 rgba(114, 159, 197, 0.1);
+      background-color: $white;
+      padding: 10px;
+      border-radius: 5px;
+
+      div {
+        color: $middle;
+      }
+
+      .sub-title {
+        margin-inline-start: 80px;
+      }
+    }
+
+    input {
+      border: none;
+      background: none;
+      color: $primary;
+
+      &:focus {
+        box-shadow: unset;
+        outline: none;
+      }
+    }
+
+    .disabled {
+      background-color: rgba($color: $middle, $alpha: 0.15);
+    }
+  }
+
+  &__files-wrapper {
+    .bg-error {
+      background-color: rgba($color: $error-light, $alpha: 0.4);
+      padding: 10px;
+      box-shadow: unset;
+      border: none;
+
+      span.SectionTitle {
+        color: $error-light;
+      }
+
+      svg.remove,
+      svg.download {
+        fill: black;
+      }
+
+      svg.reload {
+        stroke: black;
+      }
+    }
+  }
+
+  &__file {
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 0 10px 0 rgba(114, 159, 197, 0.1);
+    border: solid 1px $middle;
+    padding: 8px 10px;
+
+    .file-details {
+      height: 16px;
+
+      span {
+        color: $dark;
+      }
+
+      .file-name {
+        // width: 220px;
+        width: 140px;
+      }
+
+      .file-size {
+        color: $middle;
+        margin-inline-start: 5px;
+        width: max-content;
+      }
+    }
+
+    svg {
+      fill: $primary;
+      margin-inline-end: 7px;
+    }
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .remove {
+      fill: $dark;
+      cursor: pointer;
+    }
+
+    .reload {
+      fill: none;
+      stroke: $dark;
+      cursor: pointer;
+    }
+  }
+}
+
+.icons {
+  cursor: pointer;
+}
+
+.spinner {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
