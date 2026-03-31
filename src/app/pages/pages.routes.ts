@@ -4,15 +4,19 @@ import { Empty } from './empty/empty';
 
 export default [
     {
-        path: 'manage',
+        path: 'settings',
         children: [
             {
                 path: 'tests',
                 loadChildren: () => import('./tests/tests.routes').then((m) => m.testsRoutes)
             },
             {
-                path: 'sections',
-                loadChildren: () => import('./Lookup/sections/sections.routes').then((m) => m.sectionsRoutes)
+                path: 'ministries',
+                loadChildren: () => import('./settings/ministries/ministries.routes').then((m) => m.ministriesRoutes)
+            },
+            {
+                path: 'financial-degrees',
+                loadChildren: () => import('./settings/financial-degrees/financial-degrees.routes').then((m) => m.financialDegreesRoutes)
             }
         ]
     },

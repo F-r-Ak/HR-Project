@@ -4,20 +4,18 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SubmitButtonsComponent, PrimeInputTextComponent, SectionsService } from '../../../../../shared';
-import { Lookup } from '../../../../../shared/interfaces';
+import { SubmitButtonsComponent, PrimeInputTextComponent, MinistriesService } from '../../../../../shared';
 import { BaseEditComponent } from '../../../../../base/components/base-edit-component';
 
 @Component({
-    selector: 'app-add-edit-section',
+    selector: 'app-add-edit-ministry',
     standalone: true,
-    imports: [CardModule, CommonModule, FormsModule, ReactiveFormsModule, SubmitButtonsComponent,
-         PrimeInputTextComponent],
-    templateUrl: './add-edit-section.component.html',
-    styleUrl: './add-edit-section.component.scss'
+    imports: [CardModule, CommonModule, FormsModule, ReactiveFormsModule, SubmitButtonsComponent, PrimeInputTextComponent],
+    templateUrl: './add-edit-ministry.component.html',
+    styleUrl: './add-edit-ministry.component.scss'
 })
-export class AddEditSectionComponent extends BaseEditComponent implements OnInit {
-    sectionsService: SectionsService = inject(SectionsService);
+export class AddEditMinistryComponent extends BaseEditComponent implements OnInit {
+    ministriesService: MinistriesService = inject(MinistriesService);
     dialogService: DialogService = inject(DialogService);
 
     constructor(override activatedRoute: ActivatedRoute) {
@@ -33,7 +31,7 @@ export class AddEditSectionComponent extends BaseEditComponent implements OnInit
             }
         });
         if (this.pageType === 'edit') {
-            this.getEditSection();
+            this.getEditMinistry();
         } else {
             this.initFormGroup();
         }
@@ -42,12 +40,13 @@ export class AddEditSectionComponent extends BaseEditComponent implements OnInit
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            nameAr: ['', Validators.required]
+            name: ['', Validators.required],
+            code: ['', Validators.required]
         });
     }
 
-    getEditSection = () => {
-        this.sectionsService.getEditSection(this.id).subscribe((city: any) => {
+    getEditMinistry = () => {
+        this.ministriesService.getEditMinistry(this.id).subscribe((city: any) => {
             this.initFormGroup();
             this.form.patchValue(city);
         });
@@ -55,11 +54,11 @@ export class AddEditSectionComponent extends BaseEditComponent implements OnInit
 
     submit() {
         if (this.pageType === 'add')
-            this.sectionsService.add(this.form.value).subscribe(() => {
+            this.ministriesService.add(this.form.value).subscribe(() => {
                 this.closeDialog();
             });
         if (this.pageType === 'edit')
-            this.sectionsService.update({ id: this.id, ...this.form.value }).subscribe(() => {
+            this.ministriesService.update({ id: this.id, ...this.form.value }).subscribe(() => {
                 this.closeDialog();
             });
     }

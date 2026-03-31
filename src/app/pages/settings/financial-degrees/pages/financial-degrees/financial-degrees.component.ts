@@ -3,20 +3,18 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { BaseListComponent } from '../../../../../base/components/base-list-component';
 import { CardModule } from 'primeng/card';
-import { TableOptions } from '../../../../../shared/interfaces';
-import { SectionsService } from '../../../../../shared';
-import { PrimeDataTableComponent, PrimeDatepickerComponent, PrimeAutoCompleteComponent, PrimeTitleToolBarComponent } from '../../../../../shared';
-import { AddEditSectionComponent } from '../../components/add-edit-section/add-edit-section.component';
+import { PrimeDataTableComponent, PrimeTitleToolBarComponent, FinancialDegreesService, TableOptions } from '../../../../../shared';
+import { AddEditFinancialDegreeComponent } from '../../components/add-edit-financial-degree/add-edit-financial-degree.component';
 import { AuthHelper } from '../../../../../core';
 @Component({
-    selector: 'app-sections',
+    selector: 'app-financial-degrees',
     imports: [RouterModule, FormsModule, ReactiveFormsModule, CardModule, PrimeDataTableComponent, PrimeTitleToolBarComponent],
-    templateUrl: './sections.component.html',
-    styleUrl: './sections.component.scss'
+  templateUrl: './financial-degrees.component.html',
+  styleUrl: './financial-degrees.component.scss'
 })
-export class SectionsComponent extends BaseListComponent {
+export class FinancialDegreesComponent extends BaseListComponent {
     tableOptions!: TableOptions;
-    service = inject(SectionsService);
+    service = inject(FinancialDegreesService);
     authHelper = inject(AuthHelper);
     formBuilder: FormBuilder = inject(FormBuilder);
     constructor(activatedRoute: ActivatedRoute) {
@@ -31,29 +29,35 @@ export class SectionsComponent extends BaseListComponent {
     initializeTableOptions() {
         this.tableOptions = {
             inputUrl: {
-                getAll: 'v1/sections/getpaged',
+                getAll: 'v1/financialdegrees/getpaged',
                 getAllMethod: 'POST',
-                delete: 'v1/sections/delete'
+                delete: 'v1/financialdegrees/delete'
             },
             inputCols: this.initializeTableColumns(),
             inputActions: this.initializeTableActions(),
             permissions: {
-                componentName: 'SYSTEM-MANAGEMENT-SMART-LOOKUPS-ACCIDENT-TYPES',
+                componentName: 'HUMAN-RESOURCES-FINANCIAL-DEGREES',
                 allowAll: true,
                 listOfPermissions: []
             },
             bodyOptions: {
                 filter: {}
             },
-            responsiveDisplayedProperties: ['nameAr']
+            responsiveDisplayedProperties: ['code,name']
         };
     }
 
     initializeTableColumns(): TableOptions['inputCols'] {
         return [
             {
-                field: 'nameAr',
-                header: ' اسم القطاع/الملف',
+                field: 'code',
+                header: 'الرمز',
+                filter: true,
+                filterMode: 'text'
+            },
+            {
+                field: 'name',
+                header: 'الدرجة المالية',
                 filter: true,
                 filterMode: 'text'
             }
@@ -83,13 +87,13 @@ export class SectionsComponent extends BaseListComponent {
     }
 
     openAdd() {
-        this.openDialog(AddEditSectionComponent, 'اضافة قطاع', {
+        this.openDialog(AddEditFinancialDegreeComponent, 'اضافة درجة مالية', {
             pageType: 'add'
         });
     }
 
     openEdit(rowData: any) {
-        this.openDialog(AddEditSectionComponent, 'تعديل  قطاع', {
+        this.openDialog(AddEditFinancialDegreeComponent, 'تعديل درجة مالية', {
             pageType: 'edit',
             row: { rowData }
         });

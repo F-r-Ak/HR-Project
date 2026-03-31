@@ -44,9 +44,14 @@ export class AppMenu {
                     // routerLink: ['/pages'],
                     items: [
                         {
-                            label: 'القطاعات/الملفات',
+                            label: 'الوزارات',
                             icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/manage/sections']
+                            routerLink: ['/pages/settings/ministries']
+                        },
+                        {
+                            label: 'الدرجات المالية',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/financial-degrees']
                         },
                     ]
                 }
