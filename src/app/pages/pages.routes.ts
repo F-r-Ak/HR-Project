@@ -15,8 +15,29 @@ export default [
                 loadChildren: () => import('./settings/ministries/ministries.routes').then((m) => m.ministriesRoutes)
             },
             {
+                path: 'organizations',
+                loadChildren: () => import('./settings/organizations/organizations.routes').then((m) => m.organizationsRoutes)
+            },
+            {
+                path: 'jobs',
+                loadChildren: () => import('./settings/jobs/jobs.routes').then((m) => m.JobsRoutes)
+            },
+            {
+                path: 'qualifications',
+                loadChildren: () => import('./settings/qualifications/qualifications.routes').then((m) => m.qualificationsRoutes)
+            },
+            {
+                path: 'higher-qualifications',
+                loadChildren: () => import('./settings/higher-qualifications/higher-qualifications.routes').then((m) => m.higherQualificationsRoutes)
+            },
+            {
                 path: 'financial-degrees',
                 loadChildren: () => import('./settings/financial-degrees/financial-degrees.routes').then((m) => m.financialDegreesRoutes)
+            }
+            ,
+            {
+                path: 'nationalities',
+                loadChildren: () => import('./settings/nationalities/nationalities.routes').then((m) => m.nationalitiesRoutes)
             }
         ]
     },

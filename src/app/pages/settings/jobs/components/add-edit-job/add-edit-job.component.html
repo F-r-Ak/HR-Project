@@ -1,0 +1,28 @@
+<div [ngClass]="this.dialogService.dialogComponentRefMap.size > 0 ? '' : 'card systemBackgroundDialog'">
+    <div class="card">
+        <div class="title-container">
+            @if (this.dialogService.dialogComponentRefMap.size == 0) {
+                <div class="mb-3">
+                    <h1 class="m-0 font-24 font-bold text-primary">{{ pageTitle }}</h1>
+                </div>
+            }
+
+            @if (form) {
+                <form method="post" class="row" [formGroup]="form">
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <app-prime-input-text [formGroup]="form" controlName="code" [label]="'الكود'"> </app-prime-input-text>
+                        </div>
+
+                        <div class="field col">
+                            <app-prime-input-text [formGroup]="form" controlName="name" validatorLanguageType="ar" [label]="'الاسم'"> </app-prime-input-text>
+                        </div>
+                    </div>
+                </form>
+            }
+            @if (form) {
+                <app-submit-buttons class="mt-4" [isSubmitDisabled]="form.invalid" [submitButtonText]="pageType === 'add' ? 'ACTIONS.SUBMIT' : 'ACTIONS.SAVE'" (submit)="submit()" (cancel)="redirect()"> </app-submit-buttons>
+            }
+        </div>
+    </div>
+</div>

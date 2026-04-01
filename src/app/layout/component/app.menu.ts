@@ -48,6 +48,32 @@ export class AppMenu {
                             icon: 'pi pi-fw pi-cog',
                             routerLink: ['/pages/settings/ministries']
                         },
+                        
+                        {
+                            label: 'الجهات',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/organizations']
+                        },
+                        {
+                            label: 'المؤهلات العالية',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/higher-qualifications']
+                        },
+                        {
+                            label: 'المؤهلات',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/qualifications']
+                        },
+                        {
+                            label: 'الوظائف',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/jobs']
+                        },
+                        {
+                            label: 'الجنسية',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/nationalities']
+                        },
                         {
                             label: 'الدرجات المالية',
                             icon: 'pi pi-fw pi-cog',

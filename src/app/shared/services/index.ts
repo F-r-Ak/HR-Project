@@ -18,3 +18,7 @@ export * from './lookups/organizations/organizations.service';
 export * from './lookups/sections/sections.service';
 export * from './lookups/ministries/ministries.service';
 export * from './lookups/financial-degrees/financial-degrees.service';
+export * from './lookups/higher-qualifications/higher-qualifications.service';
+export * from './lookups/qualifications/qualifications.service';
+export * from './lookups/jobs/jobs.service';
+export * from './lookups/nationalities/nationalities.service';
