@@ -40,8 +40,8 @@ export class AddEditFinancialDegreeComponent extends BaseEditComponent implement
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            name: ['', Validators.required],
-            code: ['', Validators.required]
+            nameAr: ['', Validators.required],
+            code: []
         });
     }
 

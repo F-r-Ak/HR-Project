@@ -56,7 +56,7 @@ export class QualificationsComponent extends BaseListComponent {
                 filterMode: 'text'
             },
             {
-                field: 'name',
+                field: 'nameAr',
                 header: 'المؤهل ',
                 filter: true,
                 filterMode: 'text'
