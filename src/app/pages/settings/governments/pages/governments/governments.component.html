@@ -1,0 +1,39 @@
+<div class="d-flex flex-column h-100" >
+    <app-prime-title-toolbar [pageTitle]="pageTitle"></app-prime-title-toolbar>
+    <div class="dataBox">
+
+      <!-- open dialog -->
+      <!-- @if (authHelper.hasPageAction(pageTitle, 'Add') || authHelper.hasModule('ادمن')) { -->
+        <!-- @if (data) { -->
+          <a class="addLink">
+            <button
+              class="main-btn align-self-center font-14 main border-radius-2 py-1 px-2 mt-2 mt-sm-0"
+              type="button"
+              (click)="openAdd()"
+              pButton
+              pRipple>
+              <div class="d-flex align-items-center">
+                <i class="pi pi-plus p-2"></i>
+                <span class="p-inline-end-1">{{ 'اضافة' }}</span>
+              </div>
+            </button>
+          </a>
+        <!-- } -->
+      <!-- } -->
+
+
+      @if (tableOptions) {
+      <div class="mt-4">
+        <app-prime-data-table
+        (event)="handleEvent($event)"
+        [tableOptions]="tableOptions"
+        [data]="data"
+        [totalCount]="totalCount"
+        [pageSize]="dataTableService.opt.pageSize">
+        </app-prime-data-table>
+      </div>
+      }
+    </div>
+  </div>
+
+

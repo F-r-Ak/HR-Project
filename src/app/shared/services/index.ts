@@ -22,3 +22,5 @@ export * from './lookups/higher-qualifications/higher-qualifications.service';
 export * from './lookups/qualifications/qualifications.service';
 export * from './lookups/jobs/jobs.service';
 export * from './lookups/nationalities/nationalities.service';
+export * from './lookups/governments/governments.service';
+export * from './lookups/document-types/document-types.service';

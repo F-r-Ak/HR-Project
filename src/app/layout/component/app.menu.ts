@@ -79,6 +79,16 @@ export class AppMenu {
                             icon: 'pi pi-fw pi-cog',
                             routerLink: ['/pages/settings/financial-degrees']
                         },
+                        {
+                            label: 'الادارات',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/governments']
+                        },
+                        {
+                            label: 'انواع الوثائق',
+                            icon: 'pi pi-fw pi-cog',
+                            routerLink: ['/pages/settings/document-types']
+                        }
                     ]
                 }
                 : { styleClass: 'v' },
