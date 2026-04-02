@@ -38,6 +38,14 @@ export default [
             {
                 path: 'nationalities',
                 loadChildren: () => import('./settings/nationalities/nationalities.routes').then((m) => m.nationalitiesRoutes)
+            },
+            {
+                path: 'governments',
+                loadChildren: () => import('./settings/governments/governments.routes').then((m) => m.governmentsRoutes)
+            },
+            {
+                path: 'document-types',
+                loadChildren: () => import('./settings/document-types/document-types.routes').then((m) => m.documentTypesRoutes)
             }
         ]
     },
