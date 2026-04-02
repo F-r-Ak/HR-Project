@@ -4,20 +4,25 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SubmitButtonsComponent, PrimeInputTextComponent, OrganizationsService} from '../../../../../shared';
+import { SubmitButtonsComponent, PrimeInputTextComponent, OrganizationsService,MinistriesService, PrimeAutoCompleteComponent} from '../../../../../shared';
 import { BaseEditComponent } from '../../../../../base/components/base-edit-component';
-
+import { Lookup } from '../../../../../shared/interfaces';
 @Component({
     selector: 'app-add-edit-organization',
     standalone: true,
-    imports: [CardModule, CommonModule, FormsModule, ReactiveFormsModule, SubmitButtonsComponent, PrimeInputTextComponent],
+    imports: [CardModule, CommonModule, FormsModule, ReactiveFormsModule, SubmitButtonsComponent, PrimeInputTextComponent , PrimeAutoCompleteComponent,],
     templateUrl: './add-edit-organization.component.html',
     styleUrl: './add-edit-organization.component.scss'
 })
 export class AddEditOrganizationComponent extends BaseEditComponent implements OnInit {
     organizationsService: OrganizationsService = inject(OrganizationsService);
+    ministriesService: MinistriesService = inject(MinistriesService);
     dialogService: DialogService = inject(DialogService);
 
+
+
+     selectedMinistry: any;
+    filteredMinistries: Lookup[] = [];
     constructor(override activatedRoute: ActivatedRoute) {
         super(activatedRoute);
     }
@@ -41,7 +46,8 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
         this.form = this.fb.group({
             id: [],
             name: ['', Validators.required],
-            code: ['', Validators.required]
+            code: ['', Validators.required],
+            ministryId: [null, Validators.required]
         });
     }
 
@@ -51,7 +57,30 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
             this.form.patchValue(city);
         });
     };
+// getMinistries(event: any) {
+//         const query = event.query.toLowerCase();
+//         this.ministriesService.Ministries.subscribe({
+//             next: (res) => {
+//                 this.filteredMinistries = res.filter((item: any) => item.nameAr.toLowerCase().includes(query) || item.nameEn.toLowerCase().includes(query));
+//             },
+//             error: (err) => {
+//                 this.alert.error('خطأ فى جلب انواع الجهات');
+//             }
+//         });
+//     }
 
+//      onMinistrySelect(event: any) {
+//         this.selectedMinistry = event.value;
+//         this.form.get('ministryId')?.setValue(this.selectedMinistry.id);
+//     }
+//      fetchMinistryDetails(ministryId: any) {
+//         this.ministriesService.getMinistry(ministryId).subscribe((ministryDetails: any) => {
+//             this.selectedMinistry = ministryDetails?.data || ministryDetails;
+//             this.form.patchValue({
+//                 ministryId: this.selectedMinistry?.id
+//             });
+//         });
+//     }
     submit() {
         if (this.pageType === 'add')
             this.organizationsService.add(this.form.value).subscribe(() => {

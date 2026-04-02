@@ -17,6 +17,19 @@
                         <div class="field col">
                             <app-prime-input-text [formGroup]="form" controlName="name" validatorLanguageType="ar" [label]="'الاسم'"> </app-prime-input-text>
                         </div>
+                         <!-- <div class="field col">
+                                    <label class="text-middle font-14 font-bold mb-2"> الجهه</label>
+
+                                    <app-prime-autocomplete
+                                        [field]="'nameAr'"
+                                        [selectedOption]="selectedMinistry"
+                                        [suggestions]="filteredMinistries"
+                                        [formGroup]="form"
+                                        (onSelect)="onMinistrySelect($event)"
+                                        [lazy]="false"
+                                        (handleMethod)="getMinistries($event)"
+                                    ></app-prime-autocomplete>
+                                </div> -->
                     </div>
                 </form>
             }

@@ -17,7 +17,7 @@ export enum ClientType {
   providedIn: 'root',
 })
 export class VisitorsNotervice {
-  private hubUrl = 'http://info.aswan.gov.eg/hubs/VisitorNotification';
+  private hubUrl = 'https://award.aswan.gov.eg/hubs/VisitorNotification';
   autoScrollEnabled = signal<boolean>(true);
   private hubConnection!: HubConnection;
   private notificationsSubject = new BehaviorSubject<any[]>([]);

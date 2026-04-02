@@ -8,7 +8,7 @@ import { HttpService } from '../../../../core/services';
 })
 export class HigherQualificationsService extends HttpService {
     protected get baseUrl(): string {
-        return 'v1/higher-qualifications/';
+        return '/higher-qualifications/';
     }
 
     getHigherQualification(id: string) {

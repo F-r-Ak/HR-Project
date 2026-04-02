@@ -56,7 +56,7 @@ export class FinancialDegreesComponent extends BaseListComponent {
                 filterMode: 'text'
             },
             {
-                field: 'name',
+                field: 'nameAr',
                 header: 'الدرجة المالية',
                 filter: true,
                 filterMode: 'text'
