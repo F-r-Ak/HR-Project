@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SubmitButtonsComponent, PrimeInputTextComponent, GovernmentsService } from '../../../../../shared';
+import { SubmitButtonsComponent, PrimeInputTextComponent, DocumentTypesService } from '../../../../../shared';
 import { BaseEditComponent } from '../../../../../base/components/base-edit-component';
 
 @Component({
@@ -15,7 +15,7 @@ import { BaseEditComponent } from '../../../../../base/components/base-edit-comp
     styleUrl: './add-edit-document-type.component.scss'
 })
 export class AddEditDocumentTypeComponent extends BaseEditComponent implements OnInit {
-    governmentsService: GovernmentsService = inject(GovernmentsService);
+    documentTypesService: DocumentTypesService = inject(DocumentTypesService);
     dialogService: DialogService = inject(DialogService);
 
     constructor(override activatedRoute: ActivatedRoute) {
@@ -46,7 +46,7 @@ export class AddEditDocumentTypeComponent extends BaseEditComponent implements O
     }
 
     getEditDocumentTypes = () => {
-        this.governmentsService.getEditGovernment(this.id).subscribe((city: any) => {
+        this.documentTypesService.getEditDocumentType(this.id).subscribe((city: any) => {
             this.initFormGroup();
             this.form.patchValue(city);
         });
@@ -54,11 +54,11 @@ export class AddEditDocumentTypeComponent extends BaseEditComponent implements O
 
     submit() {
         if (this.pageType === 'add')
-            this.governmentsService.add(this.form.value).subscribe(() => {
+            this.documentTypesService.add(this.form.value).subscribe(() => {
                 this.closeDialog();
             });
         if (this.pageType === 'edit')
-            this.governmentsService.update({ id: this.id, ...this.form.value }).subscribe(() => {
+            this.documentTypesService.update({ id: this.id, ...this.form.value }).subscribe(() => {
                 this.closeDialog();
             });
     }

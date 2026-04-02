@@ -82,7 +82,7 @@ export class AppMenu {
                         {
                             label: 'الادارات',
                             icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/governments']
+                            routerLink: ['/pages/settings/departments']
                         },
                         {
                             label: 'انواع الوثائق',

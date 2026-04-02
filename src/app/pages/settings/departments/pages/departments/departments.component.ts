@@ -3,18 +3,18 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { BaseListComponent } from '../../../../../base/components/base-list-component';
 import { CardModule } from 'primeng/card';
-import { PrimeDataTableComponent, PrimeTitleToolBarComponent, GovernmentsService, TableOptions } from '../../../../../shared';
-import { AddEditGovernmentComponent } from '../../components/add-edit-government/add-edit-government.component';
+import { PrimeDataTableComponent, PrimeTitleToolBarComponent, DepartmentsService, TableOptions } from '../../../../../shared';
+import { AddEditDepartmentComponent } from '../../components/add-edit-department/add-edit-department.component';
 import { AuthHelper } from '../../../../../core';
 @Component({
-    selector: 'app-governments',
+    selector: 'app-departments',
     imports: [RouterModule, FormsModule, ReactiveFormsModule, CardModule, PrimeDataTableComponent, PrimeTitleToolBarComponent],
-  templateUrl: './governments.component.html',
-  styleUrl: './governments.component.scss'
+  templateUrl: './departments.component.html',
+  styleUrl: './departments.component.scss'
 })
-export class GovernmentsComponent extends BaseListComponent {
+export class DepartmentsComponent extends BaseListComponent {
     tableOptions!: TableOptions;
-    service = inject(GovernmentsService);
+    service = inject(DepartmentsService);
     authHelper = inject(AuthHelper);
     formBuilder: FormBuilder = inject(FormBuilder);
     constructor(activatedRoute: ActivatedRoute) {
@@ -87,13 +87,13 @@ export class GovernmentsComponent extends BaseListComponent {
     }
 
     openAdd() {
-        this.openDialog(AddEditGovernmentComponent, 'اضافة  الجنسية ', {
+        this.openDialog(AddEditDepartmentComponent, 'اضافة  الجنسية ', {
             pageType: 'add'
         });
     }
 
     openEdit(rowData: any) {
-        this.openDialog(AddEditGovernmentComponent, 'تعديل الجنسية ', {
+        this.openDialog(AddEditDepartmentComponent, 'تعديل الجنسية ', {
             pageType: 'edit',
             row: { rowData }
         });

@@ -6,20 +6,20 @@ import { HttpService } from '../../../../core/services';
 @Injectable({
     providedIn: 'root'
 })
-export class GovernmentsService extends HttpService {
+export class DepartmentsService extends HttpService {
     protected get baseUrl(): string {
-        return 'v1/governments/';
+        return 'v1/departments/';
     }
 
-    getGovernment(id: string) {
+    getDepartment(id: string) {
         return this.get<TestDto>({ apiName: `Get/${id}` });
     }
 
-    getEditGovernment(id: string) {
+    getEditDepartment(id: string) {
         return this.get<TestDto>({ apiName: `getEdit/${id}` });
     }
 
-    get Governments() {
+    get Departments() {
         return this.get<TestDto[]>({ apiName: 'getAll' });
     }
 
