@@ -4,18 +4,18 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SubmitButtonsComponent, PrimeInputTextComponent, GovernmentsService } from '../../../../../shared';
+import { SubmitButtonsComponent, PrimeInputTextComponent, DepartmentsService } from '../../../../../shared';
 import { BaseEditComponent } from '../../../../../base/components/base-edit-component';
 
 @Component({
-    selector: 'app-add-edit-government',
+    selector: 'app-add-edit-department',
     standalone: true,
     imports: [CardModule, CommonModule, FormsModule, ReactiveFormsModule, SubmitButtonsComponent, PrimeInputTextComponent],
-    templateUrl: './add-edit-government.component.html',
-    styleUrl: './add-edit-government.component.scss'
+    templateUrl: './add-edit-department.component.html',
+    styleUrl: './add-edit-department.component.scss'
 })
-export class AddEditGovernmentComponent extends BaseEditComponent implements OnInit {
-    governmentsService: GovernmentsService = inject(GovernmentsService);
+export class AddEditDepartmentComponent extends BaseEditComponent implements OnInit {
+    departmentsService: DepartmentsService = inject(DepartmentsService);
     dialogService: DialogService = inject(DialogService);
 
     constructor(override activatedRoute: ActivatedRoute) {
@@ -46,7 +46,7 @@ export class AddEditGovernmentComponent extends BaseEditComponent implements OnI
     }
 
     getEditFinancialDegree = () => {
-        this.governmentsService.getEditGovernment(this.id).subscribe((city: any) => {
+        this.departmentsService.getEditDepartment(this.id).subscribe((city: any) => {
             this.initFormGroup();
             this.form.patchValue(city);
         });
@@ -54,11 +54,11 @@ export class AddEditGovernmentComponent extends BaseEditComponent implements OnI
 
     submit() {
         if (this.pageType === 'add')
-            this.governmentsService.add(this.form.value).subscribe(() => {
+            this.departmentsService.add(this.form.value).subscribe(() => {
                 this.closeDialog();
             });
         if (this.pageType === 'edit')
-            this.governmentsService.update({ id: this.id, ...this.form.value }).subscribe(() => {
+            this.departmentsService.update({ id: this.id, ...this.form.value }).subscribe(() => {
                 this.closeDialog();
             });
     }

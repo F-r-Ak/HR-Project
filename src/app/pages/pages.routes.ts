@@ -40,8 +40,8 @@ export default [
                 loadChildren: () => import('./settings/nationalities/nationalities.routes').then((m) => m.nationalitiesRoutes)
             },
             {
-                path: 'governments',
-                loadChildren: () => import('./settings/governments/governments.routes').then((m) => m.governmentsRoutes)
+                path: 'departments',
+                loadChildren: () => import('./settings/departments/departments.routes').then((m) => m.departmentsRoutes)
             },
             {
                 path: 'document-types',
