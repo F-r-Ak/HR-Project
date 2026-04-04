@@ -40,7 +40,7 @@ export class AddEditMinistryComponent extends BaseEditComponent implements OnIni
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            name: ['', Validators.required],
+            nameAr: ['', Validators.required],
             code: ['', Validators.required]
         });
     }

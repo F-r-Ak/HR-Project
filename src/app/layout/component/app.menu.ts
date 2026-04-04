@@ -37,8 +37,8 @@ export class AppMenu {
     private buildModel(): void {
 
         this.model = [
-            this.authHelper.hasModule('ادمن')
-                ? {
+            // this.authHelper.hasModule('ادمن') ?
+                 {
                     label: 'الاعدادات',
                     icon: 'pi pi-fw pi-briefcase',
                     // routerLink: ['/pages'],
@@ -48,14 +48,14 @@ export class AppMenu {
                             icon: 'pi pi-fw pi-cog',
                             routerLink: ['/pages/settings/ministries']
                         },
-                        
+
                         {
                             label: 'الجهات',
                             icon: 'pi pi-fw pi-cog',
                             routerLink: ['/pages/settings/organizations']
                         },
                         {
-                            label: 'المؤهلات العالية',
+                            label: 'المؤهلات العليا',
                             icon: 'pi pi-fw pi-cog',
                             routerLink: ['/pages/settings/higher-qualifications']
                         },
@@ -70,7 +70,7 @@ export class AppMenu {
                             routerLink: ['/pages/settings/jobs']
                         },
                         {
-                            label: 'الجنسية',
+                            label: 'الجنسيات',
                             icon: 'pi pi-fw pi-cog',
                             routerLink: ['/pages/settings/nationalities']
                         },
@@ -91,7 +91,8 @@ export class AppMenu {
                         }
                     ]
                 }
-                : { styleClass: 'v' },
+                // : { styleClass: 'v' }
+                ,
             this.authHelper.hasModule('ادمن')
                 ? {
                     label: 'إدارة الصلاحيات',

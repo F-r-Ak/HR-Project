@@ -108,7 +108,7 @@ export class AddEditUserComponent extends BaseEditComponent implements OnInit {
     const query = event.query.toLowerCase();
 
 
-    this.organizationsService.Organizations.subscribe({
+    this.organizationsService.organizations.subscribe({
         next: (res) => {
 
 

@@ -43,7 +43,7 @@ export class HigherQualificationsComponent extends BaseListComponent {
             bodyOptions: {
                 filter: {}
             },
-            responsiveDisplayedProperties: ['code,name']
+            responsiveDisplayedProperties: ['code,nameAr']
         };
     }
 
@@ -56,7 +56,7 @@ export class HigherQualificationsComponent extends BaseListComponent {
                 filterMode: 'text'
             },
             {
-                field: 'name',
+                field: 'nameAr',
                 header: 'المؤهل العالي',
                 filter: true,
                 filterMode: 'text'

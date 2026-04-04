@@ -43,7 +43,7 @@ export class QualificationsComponent extends BaseListComponent {
             bodyOptions: {
                 filter: {}
             },
-            responsiveDisplayedProperties: ['code,name']
+            responsiveDisplayedProperties: ['code,nameAr']
         };
     }
 

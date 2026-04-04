@@ -31,7 +31,7 @@ export class AddEditDepartmentComponent extends BaseEditComponent implements OnI
             }
         });
         if (this.pageType === 'edit') {
-            this.getEditFinancialDegree();
+            this.getEditDepartment();
         } else {
             this.initFormGroup();
         }
@@ -40,15 +40,15 @@ export class AddEditDepartmentComponent extends BaseEditComponent implements OnI
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            name: ['', Validators.required],
+            nameAr: ['', Validators.required],
             code: ['', Validators.required]
         });
     }
 
-    getEditFinancialDegree = () => {
-        this.departmentsService.getEditDepartment(this.id).subscribe((city: any) => {
+    getEditDepartment = () => {
+        this.departmentsService.getEditDepartment(this.id).subscribe((department: any) => {
             this.initFormGroup();
-            this.form.patchValue(city);
+            this.form.patchValue(department);
         });
     };
 

@@ -29,21 +29,21 @@ export class JobsComponent extends BaseListComponent {
     initializeTableOptions() {
         this.tableOptions = {
             inputUrl: {
-                getAll: 'v1/qualifications/getpaged',
+                getAll: 'v1/jobs/getpaged',
                 getAllMethod: 'POST',
-                delete: 'v1/qualifications/delete'
+                delete: 'v1/jobs/delete'
             },
             inputCols: this.initializeTableColumns(),
             inputActions: this.initializeTableActions(),
             permissions: {
-                componentName: 'HUMAN-RESOURCES-HIGHER-QUALIFICATIONS',
+                componentName: 'HUMAN-RESOURCES-JOBS',
                 allowAll: true,
                 listOfPermissions: []
             },
             bodyOptions: {
                 filter: {}
             },
-            responsiveDisplayedProperties: ['code,name']
+            responsiveDisplayedProperties: ['code,nameAr']
         };
     }
 
@@ -56,7 +56,7 @@ export class JobsComponent extends BaseListComponent {
                 filterMode: 'text'
             },
             {
-                field: 'name',
+                field: 'nameAr',
                 header: 'الوظيفة ',
                 filter: true,
                 filterMode: 'text'

@@ -19,7 +19,7 @@ export class JobsService extends HttpService {
         return this.get<TestDto>({ apiName: `getEdit/${id}` });
     }
 
-    get Jobs() {
+    get jobs() {
         return this.get<TestDto[]>({ apiName: 'getAll' });
     }
 

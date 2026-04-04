@@ -43,7 +43,7 @@ export class DocumentTypeComponent extends BaseListComponent {
             bodyOptions: {
                 filter: {}
             },
-            responsiveDisplayedProperties: ['code,name']
+            responsiveDisplayedProperties: ['code,nameAr']
         };
     }
 
@@ -56,8 +56,8 @@ export class DocumentTypeComponent extends BaseListComponent {
                 filterMode: 'text'
             },
             {
-                field: 'name',
-                header: 'نوع الوثيقة', 
+                field: 'nameAr',
+                header: 'نوع الوثيقة',
                 filter: true,
                 filterMode: 'text'
             }
@@ -87,13 +87,13 @@ export class DocumentTypeComponent extends BaseListComponent {
     }
 
     openAdd() {
-        this.openDialog(AddEditDocumentTypeComponent, 'اضافة  الجنسية ', {
+        this.openDialog(AddEditDocumentTypeComponent, 'اضافة نوع وثيقة ', {
             pageType: 'add'
         });
     }
 
     openEdit(rowData: any) {
-        this.openDialog(AddEditDocumentTypeComponent, 'تعديل الجنسية ', {
+        this.openDialog(AddEditDocumentTypeComponent, 'تعديل نوع وثيقة ', {
             pageType: 'edit',
             row: { rowData }
         });

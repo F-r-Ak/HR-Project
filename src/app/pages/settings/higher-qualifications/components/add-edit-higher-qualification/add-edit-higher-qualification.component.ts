@@ -40,7 +40,7 @@ export class AddEditHigherQualificationComponent extends BaseEditComponent imple
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            name: ['', Validators.required],
+            nameAr: ['', Validators.required],
             code: ['', Validators.required]
         });
     }
