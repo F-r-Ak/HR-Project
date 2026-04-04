@@ -40,7 +40,7 @@ export class AddEditNationalityComponent extends BaseEditComponent implements On
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            name: ['', Validators.required],
+            nameAr: ['', Validators.required],
             code: ['', Validators.required]
         });
     }

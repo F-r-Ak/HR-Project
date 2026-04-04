@@ -19,7 +19,7 @@ export class QualificationsService extends HttpService {
         return this.get<TestDto>({ apiName: `getEdit/${id}` });
     }
 
-    get Qualifications() {
+    get qualifications() {
         return this.get<TestDto[]>({ apiName: 'getAll' });
     }
 

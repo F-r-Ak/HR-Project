@@ -45,7 +45,7 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
     initFormGroup() {
         this.form = this.fb.group({
             id: [],
-            name: ['', Validators.required],
+            nameAr: ['', Validators.required],
             code: ['', Validators.required],
             ministryId: [null, Validators.required]
         });

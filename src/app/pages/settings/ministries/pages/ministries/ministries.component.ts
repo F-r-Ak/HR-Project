@@ -43,7 +43,7 @@ export class MinistriesComponent extends BaseListComponent {
             bodyOptions: {
                 filter: {}
             },
-            responsiveDisplayedProperties: ['code,name']
+            responsiveDisplayedProperties: ['code,nameAr']
         };
     }
 
@@ -56,7 +56,7 @@ export class MinistriesComponent extends BaseListComponent {
                 filterMode: 'text'
             },
             {
-                field: 'name',
+                field: 'nameAr',
                 header: 'اسم الوزارة',
                 filter: true,
                 filterMode: 'text'

@@ -19,7 +19,7 @@ export class OrganizationsService extends HttpService {
         return this.get<TestDto>({ apiName: `getEdit/${id}` });
     }
 
-    get Organizations() {
+    get organizations() {
         return this.get<TestDto[]>({ apiName: 'getAll' });
     }
 

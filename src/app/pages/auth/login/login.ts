@@ -43,35 +43,36 @@ export class Login extends BaseEditComponent  {
 
     login() {
     console.log('form value: ', this.form.value);
-        if (this.form.valid) {
-            this.auth.login(this.form.value).subscribe({
-                next: (res) => {
-                    localStorage.setItem('accessToken', res.accessToken);
-                    localStorage.setItem('refreshToken', res.refreshToken);
-                    this.auth.tokenData.subscribe((tokenData: any) => {
-                    const  organizationId=tokenData?.organizationId;
-                    localStorage.setItem('tokenData', JSON.stringify(tokenData));
-                    console.log('tokenData: ', tokenData);
-                    localStorage.setItem('organizationId', organizationId);
-                    // Notify AuthHelper so other components can react immediately
-                    this.authHelper.setUserData(tokenData);
-                    });
+    this.router.navigate(['/dashboard']);
+        // if (this.form.valid) {
+        //     this.auth.login(this.form.value).subscribe({
+        //         next: (res) => {
+        //             localStorage.setItem('accessToken', res.accessToken);
+        //             localStorage.setItem('refreshToken', res.refreshToken);
+        //             this.auth.tokenData.subscribe((tokenData: any) => {
+        //             const  organizationId=tokenData?.organizationId;
+        //             localStorage.setItem('tokenData', JSON.stringify(tokenData));
+        //             console.log('tokenData: ', tokenData);
+        //             localStorage.setItem('organizationId', organizationId);
+        //             // Notify AuthHelper so other components can react immediately
+        //             this.authHelper.setUserData(tokenData);
+        //             });
 
-                    this.alert.success('تم تسجيل الدخول بنجاح');
-                    this.router.navigate(['/dashboard']);
+        //             this.alert.success('تم تسجيل الدخول بنجاح');
+        //             this.router.navigate(['/dashboard']);
 
-                    // if(this.checkUserPermission(PagesEnums.ADMIN)||this.checkUserPermission(PagesEnums.SUPER)){
-                    //   this.router.navigate(['/apexchart']);
-                    // }
-                    // else if(this.checkUserPermission(PagesEnums.ORG)){
-                },
-                error: (err) => {
-                    console.log('post err: ', err);
-                    if (err) {
-                        this.alert.error('خطا في تسجيل البيانات لا يمكنك الدخول');
-                    }
-                }
-            });
-        }
+        //             // if(this.checkUserPermission(PagesEnums.ADMIN)||this.checkUserPermission(PagesEnums.SUPER)){
+        //             //   this.router.navigate(['/apexchart']);
+        //             // }
+        //             // else if(this.checkUserPermission(PagesEnums.ORG)){
+        //         },
+        //         error: (err) => {
+        //             console.log('post err: ', err);
+        //             if (err) {
+        //                 this.alert.error('خطا في تسجيل البيانات لا يمكنك الدخول');
+        //             }
+        //         }
+        //     });
+        // }
     }
 }

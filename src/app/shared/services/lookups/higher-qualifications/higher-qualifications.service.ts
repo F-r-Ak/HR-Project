@@ -8,7 +8,7 @@ import { HttpService } from '../../../../core/services';
 })
 export class HigherQualificationsService extends HttpService {
     protected get baseUrl(): string {
-        return '/higher-qualifications/';
+        return '/higherqualifications/';
     }
 
     getHigherQualification(id: string) {
@@ -19,7 +19,7 @@ export class HigherQualificationsService extends HttpService {
         return this.get<TestDto>({ apiName: `getEdit/${id}` });
     }
 
-    get HigherQualifications() {
+    get higherQualifications() {
         return this.get<TestDto[]>({ apiName: 'getAll' });
     }
 
