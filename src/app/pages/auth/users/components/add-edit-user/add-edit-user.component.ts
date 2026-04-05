@@ -4,7 +4,7 @@ import { AbstractControl, FormsModule, ReactiveFormsModule, ValidationErrors, Va
 import { ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SubmitButtonsComponent, PrimeInputTextComponent, AccountService, PrimeAutoCompleteComponent, EmployeeService, OrganizationsService } from '../../../../../shared';
+import { SubmitButtonsComponent, PrimeInputTextComponent, AccountService, PrimeAutoCompleteComponent, EmployeesService, OrganizationsService } from '../../../../../shared';
 import { BaseEditComponent } from '../../../../../base/components/base-edit-component';
 import { TabsModule } from 'primeng/tabs';
 import { UserTabs } from '../../../../../core/enums/user-tabs';
@@ -19,7 +19,7 @@ import { UserRolesComponent } from '../user-roles/user-roles.component';
 })
 export class AddEditUserComponent extends BaseEditComponent implements OnInit {
     accountService: AccountService = inject(AccountService);
-    employeeService = inject(EmployeeService);
+    employeesService = inject(EmployeesService);
     organizationsService = inject(OrganizationsService);
     dialogService: DialogService = inject(DialogService);
     selectedEmployee: any;
@@ -136,7 +136,7 @@ export class AddEditUserComponent extends BaseEditComponent implements OnInit {
 
   console.log('Fetching employees for organization ID:', this.organizationId);
   const body: any = { filter: { organizationId: this.organizationId, search: query }, pageNumber: 1,  pageSize: 10 };
-    this.employeeService.getPaged(body).subscribe({
+    this.employeesService.getPaged(body).subscribe({
         next: (res) => {
 
              this.filteredOrganizations = res.data;

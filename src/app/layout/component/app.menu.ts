@@ -35,87 +35,84 @@ export class AppMenu {
     }
 
     private buildModel(): void {
-
         this.model = [
             // this.authHelper.hasModule('ادمن') ?
-                 {
-                    label: 'الاعدادات',
-                    icon: 'pi pi-fw pi-briefcase',
-                    // routerLink: ['/pages'],
-                    items: [
-                        {
-                            label: 'الوزارات',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/ministries']
-                        },
-
-                        {
-                            label: 'الجهات',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/organizations']
-                        },
-                        {
-                            label: 'المؤهلات العليا',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/higher-qualifications']
-                        },
-                        {
-                            label: 'المؤهلات',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/qualifications']
-                        },
-                        {
-                            label: 'الوظائف',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/jobs']
-                        },
-                        {
-                            label: 'الجنسيات',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/nationalities']
-                        },
-                        {
-                            label: 'الدرجات المالية',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/financial-degrees']
-                        },
-                        {
-                            label: 'الادارات',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/departments']
-                        },
-                        {
-                            label: 'انواع الوثائق',
-                            icon: 'pi pi-fw pi-cog',
-                            routerLink: ['/pages/settings/document-types']
-                        }
-                    ]
-                }
-                // : { styleClass: 'v' }
-                ,
+            {
+                label: 'الاعدادات',
+                icon: 'pi pi-fw pi-briefcase',
+                // routerLink: ['/pages'],
+                items: [
+                    {
+                        label: 'الجنسيات',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/nationalities']
+                    },
+                    {
+                        label: 'الوزارات',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/ministries']
+                    },
+                    {
+                        label: 'الجهات',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/organizations']
+                    },
+                    {
+                        label: 'الادارات',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/departments']
+                    },
+                    {
+                        label: 'الوظائف',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/jobs']
+                    },
+                    {
+                        label: 'الدرجات المالية',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/financial-degrees']
+                    },
+                    {
+                        label: 'المؤهلات',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/qualifications']
+                    },
+                    {
+                        label: 'المؤهلات العليا',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/higher-qualifications']
+                    },
+                    {
+                        label: 'انواع الوثائق',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/settings/document-types']
+                    }
+                ]
+            },
+            // : { styleClass: 'v' }
             this.authHelper.hasModule('ادمن')
                 ? {
-                    label: 'إدارة الصلاحيات',
-                    icon: 'pi pi-fw pi-lock',
-                    // routerLink: ['/pages'],
-                    items: [
-                        {
-                            label: 'المستخدمين',
-                            icon: 'pi pi-fw pi-user',
-                            routerLink: ['/pages/auth/users']
-                        },
-                        {
-                            label: 'الصلاحيات',
-                            icon: 'pi pi-fw pi-lock',
-                            routerLink: ['/pages/auth/roles']
-                        },
-                        {
-                            label: 'الإدارات',
-                            icon: 'pi pi-fw pi-sitemap',
-                            routerLink: ['/pages/auth/modules']
-                        }
-                    ]
-                }
+                      label: 'إدارة الصلاحيات',
+                      icon: 'pi pi-fw pi-lock',
+                      // routerLink: ['/pages'],
+                      items: [
+                          {
+                              label: 'المستخدمين',
+                              icon: 'pi pi-fw pi-user',
+                              routerLink: ['/pages/auth/users']
+                          },
+                          {
+                              label: 'الصلاحيات',
+                              icon: 'pi pi-fw pi-lock',
+                              routerLink: ['/pages/auth/roles']
+                          },
+                          {
+                              label: 'الإدارات',
+                              icon: 'pi pi-fw pi-sitemap',
+                              routerLink: ['/pages/auth/modules']
+                          }
+                      ]
+                  }
                 : { styleClass: 'v' }
         ];
     }

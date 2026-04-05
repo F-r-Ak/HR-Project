@@ -6,7 +6,7 @@ import { HttpService } from '../../../../core/services/http/http.service';
 @Injectable({
     providedIn: 'root'
 })
-export class EmployeeService extends HttpService {
+export class EmployeesService extends HttpService {
     protected get baseUrl(): string {
         return 'v1/employees/';
     }
@@ -19,7 +19,7 @@ export class EmployeeService extends HttpService {
         return this.get<EmployeeDto>({ apiName: `getEdit/${id}` });
     }
 
-    get Employee() {
+    get employees() {
         return this.get<EmployeeDto[]>({ apiName: 'getAll' });
     }
 
