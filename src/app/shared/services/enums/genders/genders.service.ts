@@ -11,7 +11,7 @@ export class GendersService extends HttpService {
     }
 
 
-    get Genders() {
+    get genders() {
         return this.get<EnumDto[]>({ apiName: 'getAll' });
     }
 }

@@ -19,7 +19,7 @@ export class DepartmentsService extends HttpService {
         return this.get<TestDto>({ apiName: `getEdit/${id}` });
     }
 
-    get Departments() {
+    get departments() {
         return this.get<TestDto[]>({ apiName: 'getAll' });
     }
 
