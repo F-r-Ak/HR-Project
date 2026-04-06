@@ -51,7 +51,7 @@ export class DocumentTypeComponent extends BaseListComponent {
         return [
             {
                 field: 'code',
-                header: 'الرمز',
+                header: 'الكود',
                 filter: true,
                 filterMode: 'text'
             },

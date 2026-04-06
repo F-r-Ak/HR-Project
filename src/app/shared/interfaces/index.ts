@@ -5,3 +5,5 @@ export * from './enum/enum';
 export * from './test/test';
 export * from "./account/account";
 export * from "./employee/employee";
+export * from "./person/person";
+export * from "./family/family";
