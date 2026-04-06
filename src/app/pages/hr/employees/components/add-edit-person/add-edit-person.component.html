@@ -1,1 +1,142 @@
-<p>add-edit-person works!</p>
+<p-card>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Personal Info -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-input-text [formGroup]="form" controlName="fullName" label="PERSON.FULL_NAME" />
+
+            <app-prime-input-text [formGroup]="form" controlName="nationalID" label="PERSON.NATIONAL_ID" />
+
+            <app-prime-datepicker [formGroup]="form" controlName="birthDate" label="PERSON.BIRTH_DATE" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.GENDER' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="gender"
+                    field="nameAr"
+                    [selectedOption]="selectedGender"
+                    [getMethod]="enumGetMethod(genders)"
+                    (onSelect)="onEnumSelect('gender', 'selectedGender', $event)"
+                    (onClear)="onEnumClear('gender', 'selectedGender')" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.RELIGION' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="religion"
+                    field="nameAr"
+                    [selectedOption]="selectedReligion"
+                    [getMethod]="enumGetMethod(religions)"
+                    (onSelect)="onEnumSelect('religion', 'selectedReligion', $event)"
+                    (onClear)="onEnumClear('religion', 'selectedReligion')" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.MARITAL_STATUS' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="maritalStatus"
+                    field="nameAr"
+                    [selectedOption]="selectedMaritalStatus"
+                    [getMethod]="enumGetMethod(maritalStatuses)"
+                    (onSelect)="onEnumSelect('maritalStatus', 'selectedMaritalStatus', $event)"
+                    (onClear)="onEnumClear('maritalStatus', 'selectedMaritalStatus')" />
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.MILITARY_STATUS' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="militaryStatus"
+                    field="nameAr"
+                    [selectedOption]="selectedMilitaryStatus"
+                    [getMethod]="enumGetMethod(militaryStatuses)"
+                    (onSelect)="onEnumSelect('militaryStatus', 'selectedMilitaryStatus', $event)"
+                    (onClear)="onEnumClear('militaryStatus', 'selectedMilitaryStatus')" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.BIRTH_GOV' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="birthGov"
+                    field="nameAr"
+                    [selectedOption]="selectedBirthGov"
+                    [getMethod]="enumGetMethod(governments)"
+                    (onSelect)="onEnumSelect('birthGov', 'selectedBirthGov', $event)"
+                    (onClear)="onEnumClear('birthGov', 'selectedBirthGov')" />
+            </div>
+
+            <app-prime-input-text [formGroup]="form" controlName="birthPlace" label="PERSON.BIRTH_PLACE" />
+        </div>
+
+        <!-- Qualifications & Nationality -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.NATIONALITY' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="nationalityId"
+                    field="nameAr"
+                    [selectedOption]="selectedNationality"
+                    [getMethod]="nationalitiesService.getDropDown.bind(nationalitiesService)"
+                    (onSelect)="onLookupSelect('nationalityId', 'selectedNationality', $event)"
+                    (onClear)="onLookupClear('nationalityId', 'selectedNationality')" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.QUALIFICATION' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="qualificationId"
+                    field="nameAr"
+                    [selectedOption]="selectedQualification"
+                    [getMethod]="qualificationsService.getDropDown.bind(qualificationsService)"
+                    (onSelect)="onLookupSelect('qualificationId', 'selectedQualification', $event)"
+                    (onClear)="onLookupClear('qualificationId', 'selectedQualification')" />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'PERSON.HIGHER_QUALIFICATION' | translate }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="higherQualificationId"
+                    field="nameAr"
+                    [selectedOption]="selectedHigherQualification"
+                    [getMethod]="higherQualificationsService.getDropDown.bind(higherQualificationsService)"
+                    (onSelect)="onLookupSelect('higherQualificationId', 'selectedHigherQualification', $event)"
+                    (onClear)="onLookupClear('higherQualificationId', 'selectedHigherQualification')" />
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-input-text [formGroup]="form" controlName="mobile" label="PERSON.MOBILE" />
+            <app-prime-input-text [formGroup]="form" controlName="homePhone" label="PERSON.HOME_PHONE" />
+            <app-prime-input-text [formGroup]="form" controlName="officePhone" label="PERSON.OFFICE_PHONE" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-input-text [formGroup]="form" controlName="email" label="PERSON.EMAIL" contentType="email" />
+            <app-prime-input-text [formGroup]="form" controlName="childrenNumber" label="PERSON.CHILDREN_NUMBER" contentType="number" />
+        </div>
+
+        <!-- Addresses -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <app-prime-input-text [formGroup]="form" controlName="currentAddress" label="PERSON.CURRENT_ADDRESS" inputType="textarea" />
+            <app-prime-input-text [formGroup]="form" controlName="previousAddress" label="PERSON.PREVIOUS_ADDRESS" inputType="textarea" />
+        </div>
+
+        <app-submit-buttons
+            (submit)="onSubmit()"
+            (cancel)="onCancel()"
+            [isSubmitDisabled]="form.invalid">
+        </app-submit-buttons>
+    </form>
+</p-card>

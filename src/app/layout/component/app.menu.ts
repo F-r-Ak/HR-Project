@@ -90,6 +90,18 @@ export class AppMenu {
                 ]
             },
             // : { styleClass: 'v' }
+            {
+                label: 'الموارد البشرية',
+                icon: 'pi pi-fw pi-briefcase',
+                // routerLink: ['/pages'],
+                items: [
+                    {
+                        label: 'شئون الموظفين',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/hr/employees']
+                    }
+                ]
+            },
             this.authHelper.hasModule('ادمن')
                 ? {
                       label: 'إدارة الصلاحيات',
