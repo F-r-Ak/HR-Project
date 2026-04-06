@@ -29,3 +29,6 @@ export * from './enums/marital-statuses/marital-statuses.service';
 export * from './enums/military-statuses/military-statuses.service';
 export * from './enums/religions/religions.service';
 export * from './enums/family-relationships/family-relationships.service';
+export * from './enums/family-relationships/family-relationships.service';
+export * from './persons/persons.service';
+export * from './families/families.service';
