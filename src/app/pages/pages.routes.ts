@@ -48,6 +48,14 @@ export default [
                 loadChildren: () => import('./settings/document-types/document-types.routes').then((m) => m.documentTypesRoutes)
             }
         ]
+    },{
+        path: 'hr',
+        children: [
+            {
+                path: 'employees',
+                loadChildren: () => import('./hr/employees/employees.routes').then((m) => m.employeesRoutes)
+            },
+        ]
     },
     {
         path: 'auth',

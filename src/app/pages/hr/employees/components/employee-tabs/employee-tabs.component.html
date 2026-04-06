@@ -2,7 +2,7 @@
     <p-steps [model]="steps" [(activeIndex)]="activeStep" [readonly]="false"></p-steps>
     <div class="mt-4">
         @if (activeStep === 0) {
-            <app-add-edit-person></app-add-edit-person>
+            <app-add-edit-person (personSubmitted)="onCorrespondenceIdChange($event); onCorrespondenceSubmitted()"></app-add-edit-person>
         }
         @if (activeStep === 1) {
             <app-add-edit-employment></app-add-edit-employment>
