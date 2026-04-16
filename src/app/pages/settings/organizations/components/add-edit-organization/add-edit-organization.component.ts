@@ -44,9 +44,9 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
 
     initFormGroup() {
         this.form = this.fb.group({
-            id: [],
+            
             nameAr: ['', Validators.required],
-            code: ['', Validators.required],
+            code: [''],
             ministryId: [null, Validators.required]
         });
     }
@@ -57,30 +57,30 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
             this.form.patchValue(city);
         });
     };
-// getMinistries(event: any) {
-//         const query = event.query.toLowerCase();
-//         this.ministriesService.Ministries.subscribe({
-//             next: (res) => {
-//                 this.filteredMinistries = res.filter((item: any) => item.nameAr.toLowerCase().includes(query) || item.nameEn.toLowerCase().includes(query));
-//             },
-//             error: (err) => {
-//                 this.alert.error('خطأ فى جلب انواع الجهات');
-//             }
-//         });
-//     }
+getMinistries(event: any) {
+        const query = event.query.toLowerCase();
+        this.ministriesService.ministries.subscribe({
+            next: (res) => {
+                this.filteredMinistries = res.filter((item: any) => item.nameAr.toLowerCase().includes(query) || item.nameEn.toLowerCase().includes(query));
+            },
+            error: (err) => {
+                this.alert.error('خطأ فى جلب انواع الجهات');
+            }
+        });
+    }
 
-//      onMinistrySelect(event: any) {
-//         this.selectedMinistry = event.value;
-//         this.form.get('ministryId')?.setValue(this.selectedMinistry.id);
-//     }
-//      fetchMinistryDetails(ministryId: any) {
-//         this.ministriesService.getMinistry(ministryId).subscribe((ministryDetails: any) => {
-//             this.selectedMinistry = ministryDetails?.data || ministryDetails;
-//             this.form.patchValue({
-//                 ministryId: this.selectedMinistry?.id
-//             });
-//         });
-//     }
+     onMinistrySelect(event: any) {
+        this.selectedMinistry = event.value;
+        this.form.get('ministryId')?.setValue(this.selectedMinistry.id);
+    }
+     fetchMinistryDetails(ministryId: any) {
+        this.ministriesService.getMinistry(ministryId).subscribe((ministryDetails: any) => {
+            this.selectedMinistry = ministryDetails?.data || ministryDetails;
+            this.form.patchValue({
+                ministryId: this.selectedMinistry?.id
+            });
+        });
+    }
     submit() {
         if (this.pageType === 'add')
             this.organizationsService.add(this.form.value).subscribe(() => {

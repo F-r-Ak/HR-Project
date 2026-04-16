@@ -8,7 +8,7 @@ import { HttpService } from '../../../../core/services/http/http.service';
 })
 export class DocumentTypesService extends HttpService {
     protected get baseUrl(): string {
-        return 'v1/documenttypes/';
+        return 'documenttypes/';
     }
 
     getDocumentTypes(id: string) {
