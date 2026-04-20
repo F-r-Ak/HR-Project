@@ -1,77 +1,56 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { CardModule } from 'primeng/card';
 import { StepsModule } from 'primeng/steps';
 import { AddEditPersonComponent } from '../add-edit-person/add-edit-person.component';
 import { AddEditEmploymentComponent } from '../add-edit-employment/add-edit-employment.component';
-import { EmployeeTabs } from '../../../../../core/enums/employee-tabs';
-import { PersonsService } from '../../../../../shared';
+import { AddEditFamilyComponent } from '../add-edit-family/add-edit-family.component';
 
 @Component({
     selector: 'app-employee-tabs',
     standalone: true,
-    imports: [
-    CardModule,
-    StepsModule,
-    AddEditPersonComponent,
-    AddEditEmploymentComponent,
-    RouterModule
-],
-  templateUrl: './employee-tabs.component.html',
-  styleUrl: './employee-tabs.component.scss'
+    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, AddEditFamilyComponent],
+    templateUrl: './employee-tabs.component.html',
+    styleUrl: './employee-tabs.component.scss'
 })
 export class EmployeeTabsComponent implements OnInit {
-    correspondenceId: string | null = null;
-    sentId: string | null = null;
-    isEditMode: boolean = false;
+    personId: string | null = null;
+    employmentId: string | null = null;
+    isEditMode = false;
 
-    activeStep: number = 0;
+    activeStep = 0;
     steps: MenuItem[] = [
         { label: 'البيانات الشخصية' },
         { label: 'بيانات التوظيف', disabled: true },
-        { label: 'بيانات العائلة', disabled: true },
-
+        { label: 'بيانات العائلة', disabled: true }
     ];
-    personsService = inject(PersonsService);
+
     private activatedRoute = inject(ActivatedRoute);
 
-    get employeeTabsEnum() {
-        return EmployeeTabs;
-    }
+    ngOnInit(): void {
+        this.activatedRoute.params.subscribe((params) => {
+            this.personId = params['personId'] || null;
+            this.employmentId = params['employmentId'] || null;
+            this.isEditMode = !!(this.personId && this.employmentId);
 
-    constructor() {}
-
-    ngOnInit() {
-        this.activatedRoute.params.subscribe(params => {
-            this.correspondenceId = params['correspondenceId'] || null;
-            this.sentId = params['sentId'] || null;
-
-            if (this.correspondenceId && this.sentId) {
-                this.isEditMode = true;
-                this.steps[1].disabled = false;
-            } else {
-                this.isEditMode = false;
-            }
+            this.steps[1].disabled = !this.isEditMode;
+            this.steps[2].disabled = !this.isEditMode;
         });
     }
 
-    onCorrespondenceIdChange(id: string) {
-        this.correspondenceId = id;
+    onPersonIdChange(id: string): void {
+        this.personId = id;
         this.steps[1].disabled = !id;
     }
 
-    onCorrespondenceSubmitted() {
-        if (this.correspondenceId || this.isEditMode) {
+    onPersonSubmitted(): void {
+        if (this.personId || this.isEditMode) {
             this.activeStep = 1;
         }
     }
 
-    onSentSubmitted() {
-        // this.router.navigate(['/pages/correspondence/sent']);
-        if (this.sentId || this.isEditMode) {
-            this.activeStep = 2;
-        }
+    onEmploymentSubmitted(): void {
+        this.steps[2].disabled = false;
+        this.activeStep = 2;
     }
-
 }
