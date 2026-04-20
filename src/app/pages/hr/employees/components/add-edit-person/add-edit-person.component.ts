@@ -81,7 +81,7 @@ export class AddEditPersonComponent implements OnInit {
             nationalityId: [null, Validators.required],
             qualificationId: [null],
             higherQualificationId: [null],
-            currentAddress: [null],
+            currentAddress: [null, Validators.required],
             previousAddress: [null],
             homePhone: [null],
             officePhone: [null],
@@ -123,23 +123,23 @@ export class AddEditPersonComponent implements OnInit {
     }
 
     onEnumSelect(field: string, selectedKey: string, event: EnumDto) {
-        this.form.get(field)?.setValue(event?.nameEn ?? null);
         (this as any)[selectedKey] = event;
+        this.form.get(field)?.setValue(event?.nameEn ?? null);
     }
 
     onEnumClear(field: string, selectedKey: string) {
-        this.form.get(field)?.setValue(null);
         (this as any)[selectedKey] = null;
+        this.form.get(field)?.setValue(null);
     }
 
     onLookupSelect(field: string, selectedKey: string, event: any) {
-        this.form.get(field)?.setValue(event?.id ?? null);
         (this as any)[selectedKey] = event;
+        this.form.get(field)?.setValue(event?.id ?? null);
     }
 
     onLookupClear(field: string, selectedKey: string) {
-        this.form.get(field)?.setValue(null);
         (this as any)[selectedKey] = null;
+        this.form.get(field)?.setValue(null);
     }
 
     // Wrap simple enum arrays as paginated-style response for autocomplete getMethod
