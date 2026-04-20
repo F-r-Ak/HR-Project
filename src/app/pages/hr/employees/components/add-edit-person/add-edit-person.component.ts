@@ -70,22 +70,22 @@ export class AddEditPersonComponent implements OnInit {
     private initForm(): void {
         this.form = this.fb.group({
             fullName: [null, Validators.required],
-            nationalID: [null, Validators.required],
-            birthDate: [null],
-            birthGov: [null],
+            nationalID: [null, [Validators.required, Validators.pattern(/^[23]\d{13}$/)]],
+            birthDate: [null, Validators.required],
+            birthGov: [null, Validators.required],
             birthPlace: [null],
-            religion: [null],
+            religion: [null, Validators.required],
             gender: [null, Validators.required],
             maritalStatus: [null],
             militaryStatus: [null],
-            nationalityId: [null],
+            nationalityId: [null, Validators.required],
             qualificationId: [null],
             higherQualificationId: [null],
             currentAddress: [null],
             previousAddress: [null],
             homePhone: [null],
             officePhone: [null],
-            mobile: [null],
+            mobile: [null, Validators.pattern(/^\d{11}$/)],
             email: [null, Validators.email],
             childrenNumber: [0]
         });

@@ -1,1 +1,54 @@
-<p>add-edit-family works!</p>
+<p-card>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-input-text [formGroup]="form" controlName="fullName" label="الاسم بالكامل" />
+
+            <app-prime-input-text [formGroup]="form" controlName="nationalID" label="الرقم القومي" />
+
+            <app-prime-datepicker [formGroup]="form" controlName="birthDate" label="تاريخ الميلاد" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'صلة القرابة' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="familyRelationship"
+                    field="nameAr"
+                    [selectedOption]="selectedFamilyRelationship"
+                    [getMethod]="enumGetMethod(familyRelationships)"
+                    (onSelect)="onEnumSelect('familyRelationship', 'selectedFamilyRelationship', $event)"
+                    (onClear)="onEnumClear('familyRelationship', 'selectedFamilyRelationship')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'المؤهل' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="qualificationId"
+                    field="nameAr"
+                    [selectedOption]="selectedQualification"
+                    [getMethod]="qualificationsService.getDropDown.bind(qualificationsService)"
+                    (onSelect)="onLookupSelect('qualificationId', 'selectedQualification', $event)"
+                    (onClear)="onLookupClear('qualificationId', 'selectedQualification')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الوظيفة' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="jobId"
+                    field="nameAr"
+                    [selectedOption]="selectedJob"
+                    [getMethod]="jobsService.getDropDown.bind(jobsService)"
+                    (onSelect)="onLookupSelect('jobId', 'selectedJob', $event)"
+                    (onClear)="onLookupClear('jobId', 'selectedJob')"
+                />
+            </div>
+        </div>
+
+        <app-submit-buttons (submit)="onSubmit()" (cancel)="onCancel()" [isSubmitDisabled]="form.invalid" />
+    </form>
+</p-card>
