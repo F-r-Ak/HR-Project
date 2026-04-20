@@ -28,7 +28,7 @@ export class EmployeeTabsComponent implements OnInit {
 
     activeStep: number = 0;
     steps: MenuItem[] = [
-        { label: 'بيانات الشخص' },
+        { label: 'البيانات الشخصية' },
         { label: 'بيانات التوظيف', disabled: true },
         { label: 'بيانات العائلة', disabled: true },
 
