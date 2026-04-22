@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { SubmitButtonsComponent, PrimeInputTextComponent, JobsService } from '../../../../../shared';
+import { SubmitButtonsComponent, PrimeInputTextComponent, NationalitiesService } from '../../../../../shared';
 import { BaseEditComponent } from '../../../../../base/components/base-edit-component';
 
 @Component({
@@ -15,7 +15,7 @@ import { BaseEditComponent } from '../../../../../base/components/base-edit-comp
     styleUrl: './add-edit-nationality.component.scss'
 })
 export class AddEditNationalityComponent extends BaseEditComponent implements OnInit {
-    jobsService: JobsService = inject(JobsService);
+    nationalitiesService: NationalitiesService = inject(NationalitiesService);
     dialogService: DialogService = inject(DialogService);
 
     constructor(override activatedRoute: ActivatedRoute) {
@@ -41,12 +41,12 @@ export class AddEditNationalityComponent extends BaseEditComponent implements On
         this.form = this.fb.group({
             id: [],
             nameAr: ['', Validators.required],
-            code: ['', Validators.required]
+            code: ['']
         });
     }
 
     getEditFinancialDegree = () => {
-        this.jobsService.getEditJob(this.id).subscribe((city: any) => {
+        this.nationalitiesService.getEditNationality(this.id).subscribe((city: any) => {
             this.initFormGroup();
             this.form.patchValue(city);
         });
@@ -54,11 +54,11 @@ export class AddEditNationalityComponent extends BaseEditComponent implements On
 
     submit() {
         if (this.pageType === 'add')
-            this.jobsService.add(this.form.value).subscribe(() => {
+            this.nationalitiesService.add(this.form.value).subscribe(() => {
                 this.closeDialog();
             });
         if (this.pageType === 'edit')
-            this.jobsService.update({ id: this.id, ...this.form.value }).subscribe(() => {
+            this.nationalitiesService.update({ id: this.id, ...this.form.value }).subscribe(() => {
                 this.closeDialog();
             });
     }

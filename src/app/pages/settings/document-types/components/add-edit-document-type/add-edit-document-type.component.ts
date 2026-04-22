@@ -39,9 +39,9 @@ export class AddEditDocumentTypeComponent extends BaseEditComponent implements O
 
     initFormGroup() {
         this.form = this.fb.group({
-            id: [],
+           
             nameAr: ['', Validators.required],
-            code: ['', Validators.required]
+            code: ['']
         });
     }
 
