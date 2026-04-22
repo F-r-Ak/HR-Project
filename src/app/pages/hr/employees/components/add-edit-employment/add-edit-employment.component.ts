@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-add-edit-employment',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './add-edit-employment.component.scss'
 })
 export class AddEditEmploymentComponent {
-
+  @Output() employmentSubmitted = new EventEmitter<void>();
 }

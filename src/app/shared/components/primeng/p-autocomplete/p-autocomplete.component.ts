@@ -61,7 +61,7 @@ export class PrimeAutoCompleteComponent {
     }
 
     handleSelect(event: any) {
-        this.onSelect.emit(this.multiple ? this.selectedOption : event);
+        this.onSelect.emit(this.multiple ? this.selectedOption : event?.value ?? event);
     }
 
     handleClear() {

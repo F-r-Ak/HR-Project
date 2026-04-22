@@ -7,7 +7,7 @@ import { HttpService } from '../../../../core/services/http/http.service';
 })
 export class MilitaryStatusesService extends HttpService {
     protected get baseUrl(): string {
-        return 'v1/militarystatuses/';
+        return 'militarystatuses/';
     }
 
 
