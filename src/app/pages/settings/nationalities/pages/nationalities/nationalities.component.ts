@@ -29,9 +29,9 @@ export class NationalitiesComponent extends BaseListComponent {
     initializeTableOptions() {
         this.tableOptions = {
             inputUrl: {
-                getAll: 'v1/qualifications/getpaged',
+                getAll: 'v1/nationalities/getpaged',
                 getAllMethod: 'POST',
-                delete: 'v1/qualifications/delete'
+                delete: 'v1/nationalities/delete'
             },
             inputCols: this.initializeTableColumns(),
             inputActions: this.initializeTableActions(),
