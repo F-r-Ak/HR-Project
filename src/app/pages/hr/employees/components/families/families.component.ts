@@ -24,6 +24,8 @@ export class FamiliesComponent extends BaseListComponent implements OnInit {
 
     override ngOnInit(): void {
         this.personId = this.activatedRoute.snapshot.params['personId'] || '';
+        console.log(this.personId);
+
         super.ngOnInit();
         this.initializeTableOptions();
     }
@@ -66,7 +68,7 @@ export class FamiliesComponent extends BaseListComponent implements OnInit {
                 listOfPermissions: []
             },
             bodyOptions: {
-                filter: { personId: this.personId }
+                filter: { "personId": this.personId }
             },
             responsiveDisplayedProperties: ['fullName', 'nationalID', 'birthDate', 'familyRelationship.nameAr']
         };
