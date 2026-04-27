@@ -10,6 +10,7 @@ import { JobsService } from '../../../../../shared/services/lookups/jobs/jobs.se
 import { PrimeInputTextComponent, PrimeAutoCompleteComponent, PrimeDatepickerComponent, SubmitButtonsComponent } from '../../../../../shared';
 import { CardModule } from 'primeng/card';
 import { TranslateModule } from '@ngx-translate/core';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-add-edit-family',
@@ -34,14 +35,21 @@ export class AddEditFamilyComponent implements OnInit {
 
     private fb = inject(FormBuilder);
     private activatedRoute = inject(ActivatedRoute);
+    private dialogConfig = inject(DynamicDialogConfig, { optional: true });
+    private dialogRef = inject(DynamicDialogRef, { optional: true });
     familiesService = inject(FamiliesService);
     familyRelationshipsService = inject(FamilyRelationshipsService);
     qualificationsService = inject(QualificationsService);
     jobsService = inject(JobsService);
 
     ngOnInit(): void {
-        this.personId = this.activatedRoute.snapshot.params['personId'] || '';
-        this.familyId = this.activatedRoute.snapshot.params['familyId'] || '';
+        if (this.dialogConfig?.data) {
+            this.personId = this.dialogConfig.data.personId || '';
+            this.familyId = this.dialogConfig.data.familyId || '';
+        } else {
+            this.personId = this.activatedRoute.snapshot.params['personId'] || '';
+            this.familyId = this.activatedRoute.snapshot.params['familyId'] || '';
+        }
 
         if (this.familyId) {
             this.pageType = 'edit';
@@ -67,7 +75,9 @@ export class AddEditFamilyComponent implements OnInit {
             familyRelationships: this.familyRelationshipsService.familyRelationships
         }).subscribe(({ familyRelationships }) => {
             this.familyRelationships = familyRelationships;
-            if (this.pageType === 'edit') this.loadFamily();
+            if (this.pageType === 'edit') {
+                this.loadFamily();
+            }
         });
     }
 
@@ -120,16 +130,19 @@ export class AddEditFamilyComponent implements OnInit {
             const body: AddFamilyDto = { ...formValue, id: '', personId: this.personId };
             this.familiesService.add(body).subscribe((res) => {
                 this.familySubmitted.emit(res.id ?? '');
+                this.dialogRef?.close(res.id);
             });
         } else {
             const body: UpdateFamilyDto = { ...formValue, id: this.familyId, personId: this.personId };
             this.familiesService.update(body).subscribe(() => {
                 this.familySubmitted.emit(this.familyId);
+                this.dialogRef?.close(this.familyId);
             });
         }
     }
 
     onCancel(): void {
         this.form.reset();
+        this.dialogRef?.close();
     }
 }
