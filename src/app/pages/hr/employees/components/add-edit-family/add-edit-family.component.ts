@@ -60,11 +60,29 @@ export class AddEditFamilyComponent implements OnInit {
         this.form = this.fb.group({
             fullName: [null, Validators.required],
             nationalID: [null, [Validators.required, Validators.pattern(/^[23]\d{13}$/)]],
-            birthDate: [null, Validators.required],
+            birthDate: [{ value: null, disabled: true }, Validators.required],
             familyRelationship: [null, Validators.required],
             qualificationId: [null],
             jobId: [null]
         });
+
+        this.form.get('nationalID')?.valueChanges.subscribe((value: string) => {
+            this.extractBirthDateFromNationalID(value);
+        });
+    }
+
+    private extractBirthDateFromNationalID(nationalID: string): void {
+        if (!nationalID || !/^[23]\d{13}$/.test(nationalID)) return;
+
+        const century = nationalID[0] === '2' ? '19' : '20';
+        const year = century + nationalID.substring(1, 3);
+        const month = nationalID.substring(3, 5);
+        const day = nationalID.substring(5, 7);
+
+        const birthDate = new Date(Date.UTC(+year, +month - 1, +day));
+        if (!isNaN(birthDate.getTime())) {
+            this.form.get('birthDate')?.setValue(birthDate, { emitEvent: false });
+        }
     }
 
     private loadDropdowns(): void {
