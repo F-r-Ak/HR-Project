@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { StepsModule } from 'primeng/steps';
 import { AddEditPersonComponent } from '../add-edit-person/add-edit-person.component';
@@ -26,15 +26,20 @@ export class EmployeeTabsComponent implements OnInit {
     ];
 
     private activatedRoute = inject(ActivatedRoute);
+    private router = inject(Router);
 
     ngOnInit(): void {
         this.activatedRoute.params.subscribe((params) => {
             this.personId = params['personId'] || null;
             this.employmentId = params['employmentId'] || null;
-            this.isEditMode = !!(this.personId && this.employmentId);
+            this.isEditMode = !!this.personId;
 
             this.steps[1].disabled = !this.isEditMode;
             this.steps[2].disabled = !this.isEditMode;
+
+            if (this.isEditMode) {
+                this.activeStep = 0;
+            }
         });
     }
 
@@ -45,6 +50,9 @@ export class EmployeeTabsComponent implements OnInit {
 
     onPersonSubmitted(): void {
         if (this.personId || this.isEditMode) {
+            if (!this.isEditMode && this.personId) {
+                this.router.navigate(['../edit', this.personId], { relativeTo: this.activatedRoute });
+            }
             this.activeStep = 1;
         }
     }
