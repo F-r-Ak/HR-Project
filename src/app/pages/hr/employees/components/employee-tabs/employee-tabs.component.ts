@@ -4,12 +4,12 @@ import { MenuItem } from 'primeng/api';
 import { StepsModule } from 'primeng/steps';
 import { AddEditPersonComponent } from '../add-edit-person/add-edit-person.component';
 import { AddEditEmploymentComponent } from '../add-edit-employment/add-edit-employment.component';
-import { AddEditFamilyComponent } from '../add-edit-family/add-edit-family.component';
+import { FamiliesComponent } from '../families/families.component';
 
 @Component({
     selector: 'app-employee-tabs',
     standalone: true,
-    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, AddEditFamilyComponent],
+    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, FamiliesComponent],
     templateUrl: './employee-tabs.component.html',
     styleUrl: './employee-tabs.component.scss'
 })
