@@ -39,7 +39,6 @@ export class AddEditJobComponent extends BaseEditComponent implements OnInit {
 
     initFormGroup() {
         this.form = this.fb.group({
-           
             nameAr: ['', Validators.required],
             code: ['']
         });

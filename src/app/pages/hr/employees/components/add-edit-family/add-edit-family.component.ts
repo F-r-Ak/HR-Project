@@ -1,13 +1,10 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, switchMap } from 'rxjs';
+import {  } from '../../../../../shared/interfaces';
 import { AddFamilyDto, EnumDto, UpdateFamilyDto } from '../../../../../shared/interfaces';
-import { FamiliesService } from '../../../../../shared/services/families/families.service';
-import { FamilyRelationshipsService } from '../../../../../shared/services/enums/family-relationships/family-relationships.service';
-import { QualificationsService } from '../../../../../shared/services/lookups/qualifications/qualifications.service';
-import { JobsService } from '../../../../../shared/services/lookups/jobs/jobs.service';
-import { PrimeInputTextComponent, PrimeAutoCompleteComponent, PrimeDatepickerComponent, SubmitButtonsComponent } from '../../../../../shared';
+import { PrimeInputTextComponent, PrimeAutoCompleteComponent, PrimeDatepickerComponent, SubmitButtonsComponent, FamiliesService, FamilyRelationshipsService, QualificationsService, JobsService } from '../../../../../shared';
 import { CardModule } from 'primeng/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -82,11 +79,19 @@ export class AddEditFamilyComponent implements OnInit {
     }
 
     private loadFamily(): void {
-        this.familiesService.getEditFamily(this.familyId).subscribe((family) => {
+        this.familiesService.getEditFamily(this.familyId).pipe(
+            switchMap((family) =>
+                forkJoin({
+                    family: of(family),
+                    qualification: family.qualificationId ? this.qualificationsService.getQualification(family.qualificationId) : of(null),
+                    job: family.jobId ? this.jobsService.getJob(family.jobId) : of(null)
+                })
+            )
+        ).subscribe(({ family, qualification, job }) => {
             this.form.patchValue({ ...family });
             this.selectedFamilyRelationship = this.familyRelationships.find((f) => f.nameEn === family.familyRelationship) ?? null;
-            this.selectedQualification = family.qualificationId ? { id: family.qualificationId, nameAr: family.qualificationName } : null;
-            this.selectedJob = family.jobId ? { id: family.jobId, nameAr: family.jobName } : null;
+            this.selectedQualification = qualification ?? null;
+            this.selectedJob = job ?? null;
         });
     }
 
