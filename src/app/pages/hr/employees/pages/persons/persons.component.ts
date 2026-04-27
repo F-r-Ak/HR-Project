@@ -106,8 +106,13 @@ export class PersonsComponent extends BaseListComponent {
                 icon: 'pi pi-file-edit',
                 color: 'text-middle',
                 isCallBack: true,
-                // This correctly navigates with both personId and id (which is employeeId in this context)
-                call: (row: any) => this.router.navigate(['/pages/hr/employees/edit/', row?.personId, row?.id]),
+                call: (row: any) => {
+                    if (row?.employmentId) {
+                        this.router.navigate(['/pages/hr/employees/edit/', row?.id, row?.employmentId]);
+                    } else {
+                        this.router.navigate(['/pages/hr/employees/edit/', row?.id]);
+                    }
+                },
                 allowAll: true
             },
             {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, switchMap } from 'rxjs';
 import { AddPersonDto, EnumDto, UpdatePersonDto } from '../../../../../shared/interfaces';
 import { PersonsService } from '../../../../../shared/services/persons/persons.service';
 import { GendersService } from '../../../../../shared/services/enums/genders/genders.service';
@@ -109,16 +109,25 @@ export class AddEditPersonComponent implements OnInit {
     }
 
     private loadPerson(): void {
-        this.personsService.getEditPerson(this.personId).subscribe((person) => {
+        this.personsService.getEditPerson(this.personId).pipe(
+            switchMap((person) =>
+                forkJoin({
+                    person: of(person),
+                    nationality: person.nationalityId ? this.nationalitiesService.getNationality(person.nationalityId) : of(null),
+                    qualification: person.qualificationId ? this.qualificationsService.getQualification(person.qualificationId) : of(null),
+                    higherQualification: person.higherQualificationId ? this.higherQualificationsService.getHigherQualification(person.higherQualificationId) : of(null)
+                })
+            )
+        ).subscribe(({ person, nationality, qualification, higherQualification }) => {
             this.form.patchValue({ ...person });
             this.selectedGender = this.genders.find((g) => g.nameEn === person.gender) ?? null;
             this.selectedReligion = this.religions.find((r) => r.nameEn === person.religion) ?? null;
             this.selectedMaritalStatus = this.maritalStatuses.find((m) => m.nameEn === person.maritalStatus) ?? null;
             this.selectedMilitaryStatus = this.militaryStatuses.find((m) => m.nameEn === person.militaryStatus) ?? null;
             this.selectedBirthGov = this.governments.find((g) => g.nameEn === person.birthGov) ?? null;
-            this.selectedNationality = person.nationalityId ? { id: person.nationalityId, nameAr: person.nationalityName } : null;
-            this.selectedQualification = person.qualificationId ? { id: person.qualificationId, nameAr: person.qualificationName } : null;
-            this.selectedHigherQualification = person.higherQualificationId ? { id: person.higherQualificationId, nameAr: person.higherQualificationName } : null;
+            this.selectedNationality = nationality ?? null;
+            this.selectedQualification = qualification ?? null;
+            this.selectedHigherQualification = higherQualification ?? null;
         });
     }
 

@@ -150,19 +150,21 @@ export class PrimeDatepickerComponent implements OnInit {
     if (!control?.value) return;
 
     const dateValue = this.parseInputDate(control.value);
+    const currentTime = control.value instanceof Date ? control.value.getTime() : null;
+
     if (this.mode === 'date') {
       const utcDate = new Date(Date.UTC(
         dateValue.getFullYear(),
         dateValue.getMonth(),
         dateValue.getDate()
       ));
-      if (control.value?.getTime() !== utcDate.getTime()) {
+      if (currentTime !== utcDate.getTime()) {
         control.setValue(utcDate, { emitEvent: false });
         this.currentValue = utcDate;
       }
     } else if (this.mode === 'datetime' && this.utcMode) {
       const utcDate = this.convertToUTCDate(dateValue);
-      if (control.value?.getTime() !== utcDate.getTime()) {
+      if (currentTime !== utcDate.getTime()) {
         control.setValue(utcDate, { emitEvent: false });
         this.currentValue = utcDate;
       }
