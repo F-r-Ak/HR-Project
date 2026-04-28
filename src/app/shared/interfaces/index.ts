@@ -8,3 +8,5 @@ export * from "./employee/employee";
 export * from "./person/person";
 export * from "./family/family";
 export * from "./employment/employment";
+export * from "./job-history/job-history";
+export * from "./training-course/training-course";

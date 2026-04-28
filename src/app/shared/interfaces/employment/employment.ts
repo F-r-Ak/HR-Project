@@ -3,30 +3,31 @@ import { Lookup, SharedProperties } from '../shared/shared';
 export interface EmploymentDto extends Lookup, Partial<SharedProperties> {
     id: string;
     personId: string;
+    person: string;
     employmentOrgId: string;
-    employmentOrgNameAr: string;
+    employmentOrg: string;
     employmentDate: string;
     decisionNumber: string;
     decisionDate: string;
     currentDegreeId: string;
-    currentDegreeNameAr: string;
+    currentDegree: string;
     degreeDate: string;
     insuranceNumber: number;
     currentJobId: string;
-    currentJobNameAr: string;
+    currentJob: string;
     currentOrgId: string;
-    currentOrgNameAr: string;
+    currentOrg: string;
     currentDepId: string;
-    currentDepNameAr: string;
+    currentDep: string;
     jobStartDate: string;
     secondmentJobId: string;
-    secondmentJobNameAr: string;
+    secondmentJob: string;
     secondmentOrgId: string;
-    secondmentOrgNameAr: string;
+    secondmentOrg: string;
     secondmentDepId: string;
-    secondmentDepNameAr: string;
+    secondmentDep: string;
     nominatedJobId: string;
-    nominatedJobNameAr: string;
+    nominatedJob: string;
 }
 
 export interface AddEmploymentDto extends Lookup, Partial<SharedProperties> {
