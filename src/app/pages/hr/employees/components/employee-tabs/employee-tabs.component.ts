@@ -5,11 +5,14 @@ import { StepsModule } from 'primeng/steps';
 import { AddEditPersonComponent } from '../add-edit-person/add-edit-person.component';
 import { AddEditEmploymentComponent } from '../add-edit-employment/add-edit-employment.component';
 import { FamiliesComponent } from '../families/families.component';
+import { JobHistoriesComponent } from '../job-histories/job-histories.component';
+import { TrainingCoursesComponent } from '../training-courses/training-courses.component';
+import { EmploymentsService } from '../../../../../shared';
 
 @Component({
     selector: 'app-employee-tabs',
     standalone: true,
-    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, FamiliesComponent],
+    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, FamiliesComponent, JobHistoriesComponent, TrainingCoursesComponent],
     templateUrl: './employee-tabs.component.html',
     styleUrl: './employee-tabs.component.scss'
 })
@@ -22,11 +25,14 @@ export class EmployeeTabsComponent implements OnInit {
     steps: MenuItem[] = [
         { label: 'البيانات الشخصية' },
         { label: 'بيانات التوظيف', disabled: true },
-        { label: 'بيانات العائلة', disabled: true }
+        { label: 'بيانات العائلة', disabled: true },
+        { label: 'الخبرات الوظيفية', disabled: true },
+        { label: 'الدورات التدريبية', disabled: true }
     ];
 
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router);
+    private employmentsService = inject(EmploymentsService);
 
     ngOnInit(): void {
         this.activatedRoute.params.subscribe((params) => {
@@ -36,9 +42,14 @@ export class EmployeeTabsComponent implements OnInit {
 
             this.steps[1].disabled = !this.isEditMode;
             this.steps[2].disabled = !this.isEditMode;
+            this.steps[3].disabled = !this.isEditMode;
+            this.steps[4].disabled = !this.isEditMode;
 
-            if (this.isEditMode) {
-                this.activeStep = 0;
+            if (this.isEditMode && !this.employmentId) {
+                this.employmentsService.getPaged({ filter: { personId: this.personId }, pageNumber: 1, pageSize: 1 }).subscribe((res) => {
+                    const id = res?.data?.[0]?.id;
+                    if (id) this.employmentId = id;
+                });
             }
         });
     }
@@ -57,8 +68,11 @@ export class EmployeeTabsComponent implements OnInit {
         }
     }
 
-    onEmploymentSubmitted(): void {
+    onEmploymentSubmitted(id?: string): void {
+        if (id) this.employmentId = id;
         this.steps[2].disabled = false;
+        this.steps[3].disabled = false;
+        this.steps[4].disabled = false;
         this.activeStep = 2;
     }
 }

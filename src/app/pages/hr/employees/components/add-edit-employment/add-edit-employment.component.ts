@@ -62,14 +62,21 @@ export class AddEditEmploymentComponent implements OnInit {
             this.employmentId = this.activatedRoute.snapshot.params['employmentId'] || '';
         }
 
-        if (this.employmentId) {
-            this.pageType = 'edit';
-        }
-
         this.initForm();
 
-        if (this.pageType === 'edit') {
+        if (this.employmentId) {
+            this.pageType = 'edit';
             this.loadEmployment();
+        } else if (this.personId) {
+            // employmentId not in route — look it up by personId
+            this.employmentsService.getPaged({ filter: { personId: this.personId }, pageNumber: 1, pageSize: 1 }).subscribe((res) => {
+                const id = res?.data?.[0]?.id;
+                if (id) {
+                    this.employmentId = id;
+                    this.pageType = 'edit';
+                    this.loadEmployment();
+                }
+            });
         }
     }
 

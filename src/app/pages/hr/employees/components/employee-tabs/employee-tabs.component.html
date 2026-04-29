@@ -10,5 +10,11 @@
         @if (activeStep === 2) {
             <app-families></app-families>
         }
+        @if (activeStep === 3) {
+            <app-job-histories [employmentId]="employmentId ?? ''"></app-job-histories>
+        }
+        @if (activeStep === 4) {
+            <app-training-courses [employmentId]="employmentId ?? ''"></app-training-courses>
+        }
     </div>
 </div>
