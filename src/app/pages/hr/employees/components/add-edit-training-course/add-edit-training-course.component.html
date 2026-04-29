@@ -1,0 +1,15 @@
+<p-card>
+    <form [formGroup]="form">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-input-text [formGroup]="form" controlName="courseName" label="اسم الدورة" />
+            <app-prime-input-text [formGroup]="form" controlName="courseDescription" label="وصف الدورة" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-datepicker [formGroup]="form" controlName="courseStartDate" label="تاريخ البداية" />
+            <app-prime-datepicker [formGroup]="form" controlName="courseEndDate" label="تاريخ النهاية" />
+        </div>
+
+        <app-submit-buttons (submit)="onSubmit()" (cancel)="onCancel()" [isSubmitDisabled]="form.invalid" />
+    </form>
+</p-card>
