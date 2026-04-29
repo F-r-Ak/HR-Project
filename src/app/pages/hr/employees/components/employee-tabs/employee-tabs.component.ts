@@ -35,6 +35,12 @@ export class EmployeeTabsComponent implements OnInit {
     private employmentsService = inject(EmploymentsService);
 
     ngOnInit(): void {
+        const nav = this.router.getCurrentNavigation();
+        const state = nav?.extras?.state ?? history.state;
+        if (state?.['activeStep'] != null) {
+            this.activeStep = state['activeStep'];
+        }
+
         this.activatedRoute.params.subscribe((params) => {
             this.personId = params['personId'] || null;
             this.employmentId = params['employmentId'] || null;
@@ -42,13 +48,17 @@ export class EmployeeTabsComponent implements OnInit {
 
             this.steps[1].disabled = !this.isEditMode;
             this.steps[2].disabled = !this.isEditMode;
-            this.steps[3].disabled = !this.isEditMode;
-            this.steps[4].disabled = !this.isEditMode;
+            this.steps[3].disabled = !this.employmentId;
+            this.steps[4].disabled = !this.employmentId;
 
             if (this.isEditMode && !this.employmentId) {
                 this.employmentsService.getPaged({ filter: { personId: this.personId }, pageNumber: 1, pageSize: 1 }).subscribe((res) => {
                     const id = res?.data?.[0]?.id;
-                    if (id) this.employmentId = id;
+                    if (id) {
+                        this.employmentId = id;
+                        this.steps[3].disabled = false;
+                        this.steps[4].disabled = false;
+                    }
                 });
             }
         });
@@ -62,9 +72,13 @@ export class EmployeeTabsComponent implements OnInit {
     onPersonSubmitted(): void {
         if (this.personId || this.isEditMode) {
             if (!this.isEditMode && this.personId) {
-                this.router.navigate(['../edit', this.personId], { relativeTo: this.activatedRoute });
+                this.router.navigate(['../edit', this.personId], {
+                    relativeTo: this.activatedRoute,
+                    state: { activeStep: 1 }
+                });
+            } else {
+                this.activeStep = 1;
             }
-            this.activeStep = 1;
         }
     }
 

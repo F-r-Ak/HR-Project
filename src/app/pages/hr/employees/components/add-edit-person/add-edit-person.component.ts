@@ -189,7 +189,7 @@ export class AddEditPersonComponent implements OnInit {
         if (this.pageType === 'add') {
             const body: AddPersonDto = { ...formValue, id: '' };
             this.personsService.add(body).subscribe((res) => {
-                this.personSubmitted.emit(res.id ?? '');
+                this.personSubmitted.emit(res as unknown as string);
             });
         } else {
             const body: UpdatePersonDto = { ...formValue, id: this.personId };
