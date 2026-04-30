@@ -39,9 +39,9 @@ export class AddEditDepartmentComponent extends BaseEditComponent implements OnI
 
     initFormGroup() {
         this.form = this.fb.group({
-            id: [],
+          
             nameAr: ['', Validators.required],
-            code: ['', Validators.required]
+            code: ['']
         });
     }
 

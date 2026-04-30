@@ -29,9 +29,9 @@ export class DepartmentsComponent extends BaseListComponent {
     initializeTableOptions() {
         this.tableOptions = {
             inputUrl: {
-                getAll: 'v1/governments/getpaged',
+                getAll: 'v1/departments/getpaged',
                 getAllMethod: 'POST',
-                delete: 'v1/governments/delete'
+                delete: 'v1/departments/delete'
             },
             inputCols: this.initializeTableColumns(),
             inputActions: this.initializeTableActions(),
@@ -87,13 +87,13 @@ export class DepartmentsComponent extends BaseListComponent {
     }
 
     openAdd() {
-        this.openDialog(AddEditDepartmentComponent, 'اضافة  الجنسية ', {
+        this.openDialog(AddEditDepartmentComponent, 'اضافة  الادارة ', {
             pageType: 'add'
         });
     }
 
     openEdit(rowData: any) {
-        this.openDialog(AddEditDepartmentComponent, 'تعديل الجنسية ', {
+        this.openDialog(AddEditDepartmentComponent, 'تعديل الادارة ', {
             pageType: 'edit',
             row: { rowData }
         });

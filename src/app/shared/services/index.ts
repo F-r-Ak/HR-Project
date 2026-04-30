@@ -32,3 +32,6 @@ export * from './enums/family-relationships/family-relationships.service';
 export * from './enums/family-relationships/family-relationships.service';
 export * from './persons/persons.service';
 export * from './families/families.service';
+export * from './employments/employments.service';
+export * from './job-histories/job-histories.service';
+export * from './training-courses/training-courses.service';

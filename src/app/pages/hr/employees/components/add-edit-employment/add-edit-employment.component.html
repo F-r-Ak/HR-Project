@@ -1,1 +1,152 @@
-<p>add-edit-employment works!</p>
+<p-card>
+    <form [formGroup]="form">
+
+        <!-- بيانات التعيين -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'جهة التعيين' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="employmentOrgId"
+                    field="nameAr"
+                    [selectedOption]="selectedEmploymentOrg"
+                    [getMethod]="organizationsService.getDropDown.bind(organizationsService)"
+                    (onSelect)="onLookupSelect('employmentOrgId', 'selectedEmploymentOrg', $event)"
+                    (onClear)="onLookupClear('employmentOrgId', 'selectedEmploymentOrg')"
+                />
+            </div>
+
+            <app-prime-datepicker [formGroup]="form" controlName="employmentDate" label="تاريخ التعيين" />
+
+            <app-prime-input-text [formGroup]="form" controlName="decisionNumber" label="رقم القرار" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-datepicker [formGroup]="form" controlName="decisionDate" label="تاريخ القرار" />
+
+            <app-prime-input-text [formGroup]="form" controlName="insuranceNumber" label="الرقم التأميني" />
+
+            <app-prime-datepicker [formGroup]="form" controlName="jobStartDate" label="تاريخ بدء العمل" />
+        </div>
+
+        <!-- الدرجة الوظيفية الحالية -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الدرجة المالية الحالية' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="currentDegreeId"
+                    field="nameAr"
+                    [selectedOption]="selectedCurrentDegree"
+                    [getMethod]="financialDegreesService.getDropDown.bind(financialDegreesService)"
+                    (onSelect)="onLookupSelect('currentDegreeId', 'selectedCurrentDegree', $event)"
+                    (onClear)="onLookupClear('currentDegreeId', 'selectedCurrentDegree')"
+                />
+            </div>
+
+            <app-prime-datepicker [formGroup]="form" controlName="degreeDate" label="تاريخ الدرجة" />
+
+
+        <!-- الوظيفة المرشح لها -->
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الوظيفة المرشح لها' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="nominatedJobId"
+                    field="nameAr"
+                    [selectedOption]="selectedNominatedJob"
+                    [getMethod]="jobsService.getDropDown.bind(jobsService)"
+                    (onSelect)="onLookupSelect('nominatedJobId', 'selectedNominatedJob', $event)"
+                    (onClear)="onLookupClear('nominatedJobId', 'selectedNominatedJob')"
+                />
+            </div>
+        </div>
+
+        <!-- الوظيفة الحالية -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الوظيفة الحالية' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="currentJobId"
+                    field="nameAr"
+                    [selectedOption]="selectedCurrentJob"
+                    [getMethod]="jobsService.getDropDown.bind(jobsService)"
+                    (onSelect)="onLookupSelect('currentJobId', 'selectedCurrentJob', $event)"
+                    (onClear)="onLookupClear('currentJobId', 'selectedCurrentJob')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الجهة الحالية' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="currentOrgId"
+                    field="nameAr"
+                    [selectedOption]="selectedCurrentOrg"
+                    [getMethod]="organizationsService.getDropDown.bind(organizationsService)"
+                    (onSelect)="onLookupSelect('currentOrgId', 'selectedCurrentOrg', $event)"
+                    (onClear)="onLookupClear('currentOrgId', 'selectedCurrentOrg')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الإدارة الحالية' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="currentDepId"
+                    field="nameAr"
+                    [selectedOption]="selectedCurrentDep"
+                    [getMethod]="departmentsService.getDropDown.bind(departmentsService)"
+                    (onSelect)="onLookupSelect('currentDepId', 'selectedCurrentDep', $event)"
+                    (onClear)="onLookupClear('currentDepId', 'selectedCurrentDep')"
+                />
+            </div>
+        </div>
+
+        <!-- الندب -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'وظيفة الندب' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="secondmentJobId"
+                    field="nameAr"
+                    [selectedOption]="selectedSecondmentJob"
+                    [getMethod]="jobsService.getDropDown.bind(jobsService)"
+                    (onSelect)="onLookupSelect('secondmentJobId', 'selectedSecondmentJob', $event)"
+                    (onClear)="onLookupClear('secondmentJobId', 'selectedSecondmentJob')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'جهة الندب' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="secondmentOrgId"
+                    field="nameAr"
+                    [selectedOption]="selectedSecondmentOrg"
+                    [getMethod]="organizationsService.getDropDown.bind(organizationsService)"
+                    (onSelect)="onLookupSelect('secondmentOrgId', 'selectedSecondmentOrg', $event)"
+                    (onClear)="onLookupClear('secondmentOrgId', 'selectedSecondmentOrg')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'إدارة الندب' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="secondmentDepId"
+                    field="nameAr"
+                    [selectedOption]="selectedSecondmentDep"
+                    [getMethod]="departmentsService.getDropDown.bind(departmentsService)"
+                    (onSelect)="onLookupSelect('secondmentDepId', 'selectedSecondmentDep', $event)"
+                    (onClear)="onLookupClear('secondmentDepId', 'selectedSecondmentDep')"
+                />
+            </div>
+        </div>
+
+        <app-submit-buttons (submit)="onSubmit()" (cancel)="onCancel()" [isSubmitDisabled]="form.invalid" />
+    </form>
+</p-card>
+

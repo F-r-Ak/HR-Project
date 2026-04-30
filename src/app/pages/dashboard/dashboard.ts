@@ -25,14 +25,10 @@ interface Slider {
         <div class="dashboardBackground d-flex">
             <div class="linearGradient d-flex justify-content-center align-items-center">
                 <div class="dashboardInfo">
-                    <img class="mb-4" src="" alt="لوجو" />
+                    <img class="mb-4" src="assets/img/title (2).png" alt="لوجو" />
 
-                    <p>مشروع</p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p>....</p>
+                    <p>نظام إدارة الموارد البشرية</p>
+                    <p>منظومة متكاملة لإدارة شؤون الموظفين والهياكل التنظيمية</p>
 
                     <div class="d-flex justify-content-center align-items-center">
                         <button class="main-btn main" type="button" pButton pRipple (click)="openDialog()">
@@ -74,7 +70,7 @@ export class Dashboard implements OnInit {
     openDialog(): void {
         // Add closable parameter with default value
         this.dialogRef = this.dialogService.open(AppInfo, {
-            header: 'معلومات عن النظام',
+            header: 'معلومات عن نظام الموارد البشرية',
             width: '45%',
             style: { 'background-color': 'var(--primary-color) !important', 'border-color': 'var(--primary-color) !importants', color: 'var(--white-color)' },
             modal: true,

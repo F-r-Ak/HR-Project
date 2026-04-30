@@ -1,0 +1,51 @@
+<p-card>
+    <form [formGroup]="form">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الوظيفة' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="jobId"
+                    field="nameAr"
+                    [selectedOption]="selectedJob"
+                    [getMethod]="jobsService.getDropDown.bind(jobsService)"
+                    (onSelect)="onLookupSelect('jobId', 'selectedJob', $event)"
+                    (onClear)="onLookupClear('jobId', 'selectedJob')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الجهة' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="organizationId"
+                    field="nameAr"
+                    [selectedOption]="selectedOrganization"
+                    [getMethod]="organizationsService.getDropDown.bind(organizationsService)"
+                    (onSelect)="onLookupSelect('organizationId', 'selectedOrganization', $event)"
+                    (onClear)="onLookupClear('organizationId', 'selectedOrganization')"
+                />
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <label>{{ 'الإدارة' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="departmentId"
+                    field="nameAr"
+                    [selectedOption]="selectedDepartment"
+                    [getMethod]="departmentsService.getDropDown.bind(departmentsService)"
+                    (onSelect)="onLookupSelect('departmentId', 'selectedDepartment', $event)"
+                    (onClear)="onLookupClear('departmentId', 'selectedDepartment')"
+                />
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <app-prime-datepicker [formGroup]="form" controlName="jobStartDate" label="تاريخ البداية" />
+            <app-prime-datepicker [formGroup]="form" controlName="jobEndDate" label="تاريخ النهاية" />
+        </div>
+
+        <app-submit-buttons (submit)="onSubmit()" (cancel)="onCancel()" [isSubmitDisabled]="form.invalid" />
+    </form>
+</p-card>

@@ -1,15 +1,13 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, switchMap } from 'rxjs';
+import {  } from '../../../../../shared/interfaces';
 import { AddFamilyDto, EnumDto, UpdateFamilyDto } from '../../../../../shared/interfaces';
-import { FamiliesService } from '../../../../../shared/services/families/families.service';
-import { FamilyRelationshipsService } from '../../../../../shared/services/enums/family-relationships/family-relationships.service';
-import { QualificationsService } from '../../../../../shared/services/lookups/qualifications/qualifications.service';
-import { JobsService } from '../../../../../shared/services/lookups/jobs/jobs.service';
-import { PrimeInputTextComponent, PrimeAutoCompleteComponent, PrimeDatepickerComponent, SubmitButtonsComponent } from '../../../../../shared';
+import { PrimeInputTextComponent, PrimeAutoCompleteComponent, PrimeDatepickerComponent, SubmitButtonsComponent, FamiliesService, FamilyRelationshipsService, QualificationsService, JobsService } from '../../../../../shared';
 import { CardModule } from 'primeng/card';
 import { TranslateModule } from '@ngx-translate/core';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
     selector: 'app-add-edit-family',
@@ -34,14 +32,21 @@ export class AddEditFamilyComponent implements OnInit {
 
     private fb = inject(FormBuilder);
     private activatedRoute = inject(ActivatedRoute);
+    private dialogConfig = inject(DynamicDialogConfig, { optional: true });
+    private dialogRef = inject(DynamicDialogRef, { optional: true });
     familiesService = inject(FamiliesService);
     familyRelationshipsService = inject(FamilyRelationshipsService);
     qualificationsService = inject(QualificationsService);
     jobsService = inject(JobsService);
 
     ngOnInit(): void {
-        this.personId = this.activatedRoute.snapshot.params['personId'] || '';
-        this.familyId = this.activatedRoute.snapshot.params['familyId'] || '';
+        if (this.dialogConfig?.data) {
+            this.personId = this.dialogConfig.data.personId || '';
+            this.familyId = this.dialogConfig.data.familyId || '';
+        } else {
+            this.personId = this.activatedRoute.snapshot.params['personId'] || '';
+            this.familyId = this.activatedRoute.snapshot.params['familyId'] || '';
+        }
 
         if (this.familyId) {
             this.pageType = 'edit';
@@ -55,11 +60,29 @@ export class AddEditFamilyComponent implements OnInit {
         this.form = this.fb.group({
             fullName: [null, Validators.required],
             nationalID: [null, [Validators.required, Validators.pattern(/^[23]\d{13}$/)]],
-            birthDate: [null, Validators.required],
+            birthDate: [{ value: null, disabled: true }, Validators.required],
             familyRelationship: [null, Validators.required],
             qualificationId: [null],
             jobId: [null]
         });
+
+        this.form.get('nationalID')?.valueChanges.subscribe((value: string) => {
+            this.extractBirthDateFromNationalID(value);
+        });
+    }
+
+    private extractBirthDateFromNationalID(nationalID: string): void {
+        if (!nationalID || !/^[23]\d{13}$/.test(nationalID)) return;
+
+        const century = nationalID[0] === '2' ? '19' : '20';
+        const year = century + nationalID.substring(1, 3);
+        const month = nationalID.substring(3, 5);
+        const day = nationalID.substring(5, 7);
+
+        const birthDate = new Date(Date.UTC(+year, +month - 1, +day));
+        if (!isNaN(birthDate.getTime())) {
+            this.form.get('birthDate')?.setValue(birthDate, { emitEvent: false });
+        }
     }
 
     private loadDropdowns(): void {
@@ -67,16 +90,26 @@ export class AddEditFamilyComponent implements OnInit {
             familyRelationships: this.familyRelationshipsService.familyRelationships
         }).subscribe(({ familyRelationships }) => {
             this.familyRelationships = familyRelationships;
-            if (this.pageType === 'edit') this.loadFamily();
+            if (this.pageType === 'edit') {
+                this.loadFamily();
+            }
         });
     }
 
     private loadFamily(): void {
-        this.familiesService.getEditFamily(this.familyId).subscribe((family) => {
+        this.familiesService.getEditFamily(this.familyId).pipe(
+            switchMap((family) =>
+                forkJoin({
+                    family: of(family),
+                    qualification: family.qualificationId ? this.qualificationsService.getQualification(family.qualificationId) : of(null),
+                    job: family.jobId ? this.jobsService.getJob(family.jobId) : of(null)
+                })
+            )
+        ).subscribe(({ family, qualification, job }) => {
             this.form.patchValue({ ...family });
             this.selectedFamilyRelationship = this.familyRelationships.find((f) => f.nameEn === family.familyRelationship) ?? null;
-            this.selectedQualification = family.qualificationId ? { id: family.qualificationId, nameAr: family.qualificationName } : null;
-            this.selectedJob = family.jobId ? { id: family.jobId, nameAr: family.jobName } : null;
+            this.selectedQualification = qualification ?? null;
+            this.selectedJob = job ?? null;
         });
     }
 
@@ -120,16 +153,19 @@ export class AddEditFamilyComponent implements OnInit {
             const body: AddFamilyDto = { ...formValue, id: '', personId: this.personId };
             this.familiesService.add(body).subscribe((res) => {
                 this.familySubmitted.emit(res.id ?? '');
+                this.dialogRef?.close(res.id);
             });
         } else {
             const body: UpdateFamilyDto = { ...formValue, id: this.familyId, personId: this.personId };
             this.familiesService.update(body).subscribe(() => {
                 this.familySubmitted.emit(this.familyId);
+                this.dialogRef?.close(this.familyId);
             });
         }
     }
 
     onCancel(): void {
         this.form.reset();
+        this.dialogRef?.close();
     }
 }

@@ -29,9 +29,9 @@ export class DocumentTypeComponent extends BaseListComponent {
     initializeTableOptions() {
         this.tableOptions = {
             inputUrl: {
-                getAll: 'v1/governments/getpaged',
+                getAll: 'documenttypes/getpaged',
                 getAllMethod: 'POST',
-                delete: 'v1/governments/delete'
+                delete: 'documenttypes/delete'
             },
             inputCols: this.initializeTableColumns(),
             inputActions: this.initializeTableActions(),

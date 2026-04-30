@@ -15,7 +15,11 @@ export const employeesRoutes: Routes = [
     {
         path: 'edit/:personId/:employmentId',
         loadComponent: () => import('./components/employee-tabs/employee-tabs.component').then((c) => c.EmployeeTabsComponent),
-
+        data: { pageTitle: 'تعديل موظف', pageType: 'edit' }
+    },
+    {
+        path: 'edit/:personId',
+        loadComponent: () => import('./components/employee-tabs/employee-tabs.component').then((c) => c.EmployeeTabsComponent),
         data: { pageTitle: 'تعديل موظف', pageType: 'edit' }
     }
 ];
