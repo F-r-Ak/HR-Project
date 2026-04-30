@@ -16,5 +16,8 @@
         @if (activeStep === 4) {
             <app-training-courses [employmentId]="employmentId ?? ''"></app-training-courses>
         }
+        @if (activeStep === 5) {
+            <app-documents [personId]="personId ?? ''"></app-documents>
+        }
     </div>
 </div>

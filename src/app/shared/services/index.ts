@@ -35,3 +35,5 @@ export * from './families/families.service';
 export * from './employments/employments.service';
 export * from './job-histories/job-histories.service';
 export * from './training-courses/training-courses.service';
+export * from './documents/documents.service';
+
