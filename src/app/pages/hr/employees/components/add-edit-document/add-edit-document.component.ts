@@ -1,12 +1,14 @@
 import { Component, ElementRef, EventEmitter, inject, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin, of, switchMap } from 'rxjs';
 import { Attachment } from '../../../../../shared/interfaces/attachment/attachment';
 import {
     PrimeInputTextComponent,
-    PrimeDatepickerComponent,
+    PrimeAutoCompleteComponent,
     SubmitButtonsComponent,
-    TrainingCoursesService
+    DocumentsService,
+    DocumentTypesService
 } from '../../../../../shared';
 import { AttachmentService } from '../../../../../shared/services/attachment/attachment.service';
 import { CardModule } from 'primeng/card';
@@ -14,20 +16,22 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
-    selector: 'app-add-edit-training-course',
+    selector: 'app-add-edit-document',
     standalone: true,
-    imports: [ReactiveFormsModule, CardModule, TranslateModule, PrimeInputTextComponent, PrimeDatepickerComponent, SubmitButtonsComponent],
-    templateUrl: './add-edit-training-course.component.html',
-    styleUrl: './add-edit-training-course.component.scss'
+    imports: [ReactiveFormsModule, CardModule, TranslateModule, PrimeInputTextComponent, PrimeAutoCompleteComponent, SubmitButtonsComponent],
+    templateUrl: './add-edit-document.component.html',
+    styleUrl: './add-edit-document.component.scss'
 })
-export class AddEditTrainingCourseComponent implements OnInit {
-    @Output() trainingCourseSubmitted = new EventEmitter<string>();
+export class AddEditDocumentComponent implements OnInit {
+    @Output() documentSubmitted = new EventEmitter<string>();
     @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
     form!: FormGroup;
     pageType: 'add' | 'edit' = 'add';
-    employmentId: string = '';
-    trainingCourseId: string = '';
+    personId: string = '';
+    documentId: string = '';
+
+    selectedDocumentType: any = null;
 
     /** Newly selected files (not yet on server) */
     selectedFiles: File[] = [];
@@ -40,40 +44,57 @@ export class AddEditTrainingCourseComponent implements OnInit {
     private activatedRoute = inject(ActivatedRoute);
     private dialogConfig = inject(DynamicDialogConfig, { optional: true });
     private dialogRef = inject(DynamicDialogRef, { optional: true });
-    trainingCoursesService = inject(TrainingCoursesService);
+    documentsService = inject(DocumentsService);
+    documentTypesService = inject(DocumentTypesService);
     attachmentService = inject(AttachmentService);
 
     ngOnInit(): void {
         if (this.dialogConfig?.data) {
-            this.employmentId = this.dialogConfig.data.employmentId || '';
-            this.trainingCourseId = this.dialogConfig.data.trainingCourseId || '';
+            this.personId = this.dialogConfig.data.personId || '';
+            this.documentId = this.dialogConfig.data.documentId || '';
         } else {
-            this.employmentId = this.activatedRoute.snapshot.params['employmentId'] || '';
-            this.trainingCourseId = this.activatedRoute.snapshot.params['trainingCourseId'] || '';
+            this.personId = this.activatedRoute.snapshot.params['personId'] || '';
+            this.documentId = this.activatedRoute.snapshot.params['documentId'] || '';
         }
 
         this.initForm();
 
-        if (this.trainingCourseId) {
+        if (this.documentId) {
             this.pageType = 'edit';
-            this.loadTrainingCourse();
+            this.loadDocument();
         }
     }
 
     private initForm(): void {
         this.form = this.fb.group({
-            courseName: [null, Validators.required],
-            courseDescription: [null],
-            courseStartDate: [null, Validators.required],
-            courseEndDate: [null]
+            documentTypeId: [null, Validators.required],
+            documentNumber: [, Validators.required]
         });
     }
 
-    private loadTrainingCourse(): void {
-        this.trainingCoursesService.getEditTrainingCourse(this.trainingCourseId).subscribe((course) => {
-            this.form.patchValue({ ...course });
-            this.existingAttachments = course.attachs ? [...course.attachs] : [];
+    private loadDocument(): void {
+        this.documentsService.getEditDocument(this.documentId).pipe(
+            switchMap((document) =>
+                forkJoin({
+                    document: of(document),
+                    documentType: document.documentTypeId ? this.documentTypesService.getDocumentTypes(document.documentTypeId) : of(null)
+                })
+            )
+        ).subscribe(({ document, documentType }) => {
+            this.form.patchValue({ ...document });
+            this.selectedDocumentType = documentType ?? null;
+            this.existingAttachments = document.attachs ? [...document.attachs] : [];
         });
+    }
+
+    onLookupSelect(field: string, selectedKey: string, event: any) {
+        this.form.get(field)?.setValue(event?.id ?? null);
+        (this as any)[selectedKey] = event;
+    }
+
+    onLookupClear(field: string, selectedKey: string) {
+        this.form.get(field)?.setValue(null);
+        (this as any)[selectedKey] = null;
     }
 
     // ── File selection ──────────────────────────────────────────────────────────
@@ -114,24 +135,22 @@ export class AddEditTrainingCourseComponent implements OnInit {
         const formValue = this.form.getRawValue();
         const formData = new FormData();
 
-        formData.append('id', this.pageType === 'edit' ? this.trainingCourseId : '');
-        formData.append('employmentId', this.employmentId);
-        formData.append('courseName', formValue.courseName ?? '');
-        formData.append('courseDescription', formValue.courseDescription ?? '');
-        formData.append('courseStartDate', formValue.courseStartDate ? new Date(formValue.courseStartDate).toISOString() : '');
-        formData.append('courseEndDate', formValue.courseEndDate ? new Date(formValue.courseEndDate).toISOString() : '');
+        formData.append('id', this.pageType === 'edit' ? this.documentId : '');
+        formData.append('personId', this.personId);
+        formData.append('documentTypeId', formValue.documentTypeId ?? '');
+        formData.append('documentNumber', formValue.documentNumber ?? '');
 
         this.selectedFiles.forEach((file) => formData.append('attachs', file, file.name));
 
         if (this.pageType === 'add') {
-            this.trainingCoursesService.add(formData).subscribe((res) => {
-                this.trainingCourseSubmitted.emit(res.id ?? '');
+            this.documentsService.add(formData).subscribe((res) => {
+                this.documentSubmitted.emit(res.id ?? '');
                 this.dialogRef?.close(res.id);
             });
         } else {
-            this.trainingCoursesService.update(formData).subscribe(() => {
-                this.trainingCourseSubmitted.emit(this.trainingCourseId);
-                this.dialogRef?.close(this.trainingCourseId);
+            this.documentsService.update(formData).subscribe(() => {
+                this.documentSubmitted.emit(this.documentId);
+                this.dialogRef?.close(this.documentId);
             });
         }
     }
@@ -155,3 +174,4 @@ export class AddEditTrainingCourseComponent implements OnInit {
         return icons[ext ?? ''] ?? 'pi pi-file';
     }
 }
+

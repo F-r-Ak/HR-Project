@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
-import { AddTrainingCourseDto, TrainingCourseDto, UpdateTrainingCourseDto, GetPagedBody } from '../../interfaces';
+import { AddDocumentDto, DocumentDto, UpdateDocumentDto, GetPagedBody } from '../../interfaces';
 import { Observable } from 'rxjs';
 import { HttpService } from '../../../core/services/http/http.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TrainingCoursesService extends HttpService {
+export class DocumentsService extends HttpService {
     protected get baseUrl(): string {
-        return 'v1/trainingcourses/';
+        return 'documents/';
     }
 
     public getBaseUrl(): string {
         return this.baseUrl;
     }
 
-    getTrainingCourse(id: string) {
-        return this.get<TrainingCourseDto>({ apiName: `Get/${id}` });
+    getDocument(id: string) {
+        return this.get<DocumentDto>({ apiName: `Get/${id}` });
     }
 
-    getEditTrainingCourse(id: string) {
-        return this.get<TrainingCourseDto>({ apiName: `getEdit/${id}` });
+    getEditDocument(id: string) {
+        return this.get<DocumentDto>({ apiName: `getEdit/${id}` });
     }
 
-    get trainingCourses() {
-        return this.get<TrainingCourseDto[]>({ apiName: 'getAll' });
+    get documents() {
+        return this.get<DocumentDto[]>({ apiName: 'getAll' });
     }
 
     getDropDown(body: GetPagedBody<any>): Observable<any> {
@@ -36,11 +36,11 @@ export class TrainingCoursesService extends HttpService {
     }
 
     add(body: FormData) {
-        return this.post<FormData, TrainingCourseDto>({ apiName: 'add', showAlert: true }, body);
+        return this.post<FormData, DocumentDto>({ apiName: 'add', showAlert: true }, body);
     }
 
     update(body: FormData) {
-        return this.put<FormData, TrainingCourseDto>({ apiName: 'update', showAlert: true }, body);
+        return this.put<FormData, DocumentDto>({ apiName: 'update', showAlert: true }, body);
     }
 
     remove(id: string) {

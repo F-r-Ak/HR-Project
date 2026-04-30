@@ -7,12 +7,13 @@ import { AddEditEmploymentComponent } from '../add-edit-employment/add-edit-empl
 import { FamiliesComponent } from '../families/families.component';
 import { JobHistoriesComponent } from '../job-histories/job-histories.component';
 import { TrainingCoursesComponent } from '../training-courses/training-courses.component';
+import { DocumentsComponent } from '../documents/documents.component';
 import { EmploymentsService } from '../../../../../shared';
 
 @Component({
     selector: 'app-employee-tabs',
     standalone: true,
-    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, FamiliesComponent, JobHistoriesComponent, TrainingCoursesComponent],
+    imports: [StepsModule, RouterModule, AddEditPersonComponent, AddEditEmploymentComponent, FamiliesComponent, JobHistoriesComponent, TrainingCoursesComponent, DocumentsComponent],
     templateUrl: './employee-tabs.component.html',
     styleUrl: './employee-tabs.component.scss'
 })
@@ -27,7 +28,8 @@ export class EmployeeTabsComponent implements OnInit {
         { label: 'بيانات التوظيف', disabled: true },
         { label: 'بيانات العائلة', disabled: true },
         { label: 'الخبرات الوظيفية', disabled: true },
-        { label: 'الدورات التدريبية', disabled: true }
+        { label: 'الدورات التدريبية', disabled: true },
+        { label: 'الوثائق', disabled: true }
     ];
 
     private activatedRoute = inject(ActivatedRoute);
@@ -50,6 +52,7 @@ export class EmployeeTabsComponent implements OnInit {
             this.steps[2].disabled = !this.isEditMode;
             this.steps[3].disabled = !this.employmentId;
             this.steps[4].disabled = !this.employmentId;
+            this.steps[5].disabled = !this.isEditMode;
 
             if (this.isEditMode && !this.employmentId) {
                 this.employmentsService.getPaged({ filter: { personId: this.personId }, pageNumber: 1, pageSize: 1 }).subscribe((res) => {
@@ -58,8 +61,7 @@ export class EmployeeTabsComponent implements OnInit {
                         this.employmentId = id;
                         this.steps[3].disabled = false;
                         this.steps[4].disabled = false;
-                    }
-                });
+                    }                });
             }
         });
     }
@@ -88,5 +90,4 @@ export class EmployeeTabsComponent implements OnInit {
         this.steps[3].disabled = false;
         this.steps[4].disabled = false;
         this.activeStep = 2;
-    }
-}
+    }}

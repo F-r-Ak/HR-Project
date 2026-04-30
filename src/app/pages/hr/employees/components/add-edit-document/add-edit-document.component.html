@@ -1,13 +1,20 @@
 <p-card>
     <form [formGroup]="form">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <app-prime-input-text [formGroup]="form" controlName="courseName" label="اسم الدورة" />
-            <app-prime-datepicker [formGroup]="form" controlName="courseStartDate" label="تاريخ البداية" />
-            <app-prime-datepicker [formGroup]="form" controlName="courseEndDate" label="تاريخ النهاية" />
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div class="flex flex-col gap-1">
+                <label>{{ 'نوع الوثيقة' }}</label>
+                <app-prime-autocomplete
+                    [formGroup]="form"
+                    controlName="documentTypeId"
+                    field="nameAr"
+                    [selectedOption]="selectedDocumentType"
+                    [getMethod]="documentTypesService.getDropDown.bind(documentTypesService)"
+                    (onSelect)="onLookupSelect('documentTypeId', 'selectedDocumentType', $event)"
+                    (onClear)="onLookupClear('documentTypeId', 'selectedDocumentType')"
+                />
+            </div>
 
-        <div class="grid grid-cols-1 gap-4 mb-4">
-            <app-prime-input-text [formGroup]="form" controlName="courseDescription" contentType="textarea" label="وصف الدورة" />
+            <app-prime-input-text [formGroup]="form" controlName="documentNumber"  contentType="number" label="رقم الوثيقة" />
         </div>
 
         <!-- Attachments -->
@@ -35,7 +42,7 @@
                             <i class="pi pi-trash text-red-500 cursor-pointer" (click)="removeExistingAttachment(att)"></i>
                         </div>
                     }
-                </div>
+ </div>
             }
 
             <!-- Newly selected files -->
@@ -58,4 +65,3 @@
         <app-submit-buttons (submit)="onSubmit()" (cancel)="onCancel()" [isSubmitDisabled]="form.invalid" />
     </form>
 </p-card>
-
