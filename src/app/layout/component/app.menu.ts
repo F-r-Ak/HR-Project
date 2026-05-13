@@ -102,8 +102,9 @@ export class AppMenu {
                     }
                 ]
             },
-            this.authHelper.hasModule('ادمن')
-                ? {
+            // this.authHelper.hasModule('ادمن')
+                // ?
+                {
                       label: 'إدارة الصلاحيات',
                       icon: 'pi pi-fw pi-lock',
                       // routerLink: ['/pages'],
@@ -125,7 +126,7 @@ export class AppMenu {
                           }
                       ]
                   }
-                : { styleClass: 'v' }
+                // : { styleClass: 'v' }
         ];
     }
 }
