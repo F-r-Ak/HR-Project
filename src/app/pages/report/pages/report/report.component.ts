@@ -40,7 +40,7 @@ export class ReportComponent implements OnInit {
             PersonId: [''],
             NationalId: [''],
            
-            reportName: ['Report', [Validators.required, Validators.minLength(1)]],
+            reportName: ['PersonReport', [Validators.required, Validators.minLength(1)]],
             reportType: ['pdf', [Validators.required]],
             acceptLanguage: ['ar', [Validators.required]]
         });
@@ -88,6 +88,12 @@ export class ReportComponent implements OnInit {
     }
 
     onExecute() {
+        // Validate that at least PersonId or NationalId is provided
+        if (!this.form.get('PersonId')?.value && !this.form.get('NationalId')?.value) {
+            this.alert.error('يرجى إدخال معرّف الشخص أو الرقم القومي');
+            return;
+        }
+
         if (this.form.valid) {
             this.isGeneratingReport = true;
             const formData = this.form.value;
@@ -95,10 +101,13 @@ export class ReportComponent implements OnInit {
             // Clean up the form data - remove empty values
             const cleanedData = this.cleanFormData(formData);
 
-            console.log('Generating Report with data:', cleanedData);
-
-            // Debug: Log the API URL that will be called
-            console.log('API URL will be:', `${this.personsService['domainName']}${this.personsService['baseUrl']}getreport`);
+            // Log detailed request information for debugging
+            console.log('=== Report Generation Request ===');
+            console.log('Form Data:', formData);
+            console.log('Cleaned Data:', cleanedData);
+            console.log('API Endpoint:', `${this.personsService['domainName']}${this.personsService['baseUrl']}getreport`);
+            console.log('Query Parameters:', this.buildQueryParamsDebug(cleanedData));
+            console.log('=================================');
 
             // Since the API returns the file directly, use downloadReport
             this.personsService.downloadReport(cleanedData).subscribe({
@@ -120,29 +129,46 @@ export class ReportComponent implements OnInit {
                     // Clean up
                     window.URL.revokeObjectURL(url);
 
+                    this.alert.success('تم تحميل التقرير بنجاح');
                 },
                 error: (error: any) => {
                     this.isGeneratingReport = false;
-                    console.error('Error generating report:', error);
+                    console.error('=== Report Generation Error ===');
+                    console.error('Status:', error.status);
+                    console.error('Error:', error);
+                    console.error('================================');
 
                     let errorMessage = 'حدث خطأ أثناء إنشاء التقرير';
-                    if (error.error?.message) {
+                    
+                    if (error.status === 500) {
+                        errorMessage = 'خطأ في الخادم: تحقق من صحة بيانات الشخص والرقم القومي';
+                    } else if (error.status === 404) {
+                        errorMessage = 'لم يتم العثور على البيانات المطلوبة - تأكد من وجود الشخص في النظام';
+                    } else if (error.status === 400) {
+                        errorMessage = 'طلب غير صحيح - تحقق من البيانات المدخلة';
+                    } else if (error.error?.message) {
                         errorMessage = error.error.message;
                     } else if (error.message) {
                         errorMessage = error.message;
-                    } else if (error.status === 404) {
-                        errorMessage = 'لم يتم العثور على البيانات المطلوبة';
-                    } else if (error.status === 500) {
-                        errorMessage = 'خطأ في الخادم، يرجى المحاولة لاحقاً';
                     }
 
-                    alert(errorMessage);
+                    this.alert.error(errorMessage);
                 }
             });
         } else {
-            alert('يرجى التأكد من صحة البيانات المدخلة');
+            this.alert.error('يرجى التأكد من صحة البيانات المدخلة');
             this.markFormGroupTouched();
         }
+    }
+
+    private buildQueryParamsDebug(body: any): any {
+        const params: any = {};
+        if (body.reportName) params.ReportName = body.reportName;
+        if (body.reportType) params.ReportType = body.reportType;
+        if (body.acceptLanguage) params.AcceptLanguage = body.acceptLanguage;
+        if (body.PersonId) params.PersonId = body.PersonId;
+        if (body.NationalId) params.NationalId = body.NationalId;
+        return params;
     }
 
     private cleanFormData(formData: any): any {
@@ -158,7 +184,7 @@ export class ReportComponent implements OnInit {
 
         // Ensure required fields have default values
         if (!cleaned.reportName) {
-            cleaned.reportName = 'VisitorsReport';
+            cleaned.reportName = 'PersonReport';
         }
         if (!cleaned.reportType) {
             cleaned.reportType = 'pdf';
@@ -183,7 +209,7 @@ export class ReportComponent implements OnInit {
         this.form.reset();
         // Reset to default values
         this.form.patchValue({
-            reportName: 'VisitorsReport',
+            reportName: 'PersonReport',
             reportType: 'pdf',
             acceptLanguage: 'ar'
         });
