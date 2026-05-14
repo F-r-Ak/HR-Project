@@ -55,6 +55,17 @@ export default [
                 path: 'employees',
                 loadChildren: () => import('./hr/employees/employees.routes').then((m) => m.employeesRoutes)
             },
+            
+        ]
+    },
+    {
+        path: '',
+        children: [
+            {
+                path: 'report',
+                loadChildren: () => import('./report/report.routes').then((m) => m.ReportRoutes)
+            },
+            
         ]
     },
     {

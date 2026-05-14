@@ -42,4 +42,33 @@ export class PersonsService extends HttpService {
     remove(id: string) {
         return this.delete({ apiName: `delete/`, showAlert: true }, id);
     }
+     generateReport(body: any): Observable<any> {
+        // Convert body to query parameters
+        const params = this.buildQueryParams(body);
+        return this.get<any>({ apiName: 'getreport', params });
+    }
+
+    downloadReport(body: any): Observable<Blob> {
+        // Convert body to query parameters and download as blob
+        const params = this.buildQueryParams(body);
+        const queryString = new URLSearchParams(params).toString();
+        return this.http.get(`${this.domainName}${this.baseUrl}getreport?${queryString}`, {
+            responseType: 'blob'
+        });
+    }
+
+    private buildQueryParams(body: any): any {
+        const params: any = {};
+
+        // Map form fields to API parameters
+        if (body.reportName) params.ReportName = body.reportName;
+        if (body.reportType) params.ReportType = body.reportType;
+        if (body.acceptLanguage) params.AcceptLanguage = body.acceptLanguage;
+        if (body.PersonId) params.PersonId = body.PersonId;
+        if (body.NationalId) params.NationalId = body.NationalId;
+       
+        return params;
+    }
 }
+
+

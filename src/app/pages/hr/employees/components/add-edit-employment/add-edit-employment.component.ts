@@ -92,7 +92,7 @@ export class AddEditEmploymentComponent implements OnInit {
             currentJobId: [null],
             currentOrgId: [null],
             currentDepId: [null],
-            jobStartDate: [null],
+            secondmentJobDate: [null],
             secondmentJobId: [null],
             secondmentOrgId: [null],
             secondmentDepId: [null],

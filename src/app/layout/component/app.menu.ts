@@ -99,6 +99,11 @@ export class AppMenu {
                         label: 'شئون الموظفين',
                         icon: 'pi pi-fw pi-cog',
                         routerLink: ['/pages/hr/employees']
+                    },
+                     {
+                        label: ' التقرير',
+                        icon: 'pi pi-fw pi-cog',
+                        routerLink: ['/pages/report']
                     }
                 ]
             },

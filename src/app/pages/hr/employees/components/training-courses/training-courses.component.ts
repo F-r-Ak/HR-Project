@@ -23,6 +23,7 @@ export class TrainingCoursesComponent extends BaseListComponent implements OnIni
     }
 
     override ngOnInit(): void {
+        
         super.ngOnInit();
         this.initializeTableOptions();
     }
