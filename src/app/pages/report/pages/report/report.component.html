@@ -1,0 +1,73 @@
+<div class="card">
+    <h5>تقرير </h5>
+    <form [formGroup]="form">
+        <div class="row">
+            <!-- Visitor Name -->
+            <div class="col-6 md:col-6 lg:col-4">
+                <div class="form-group d-flex flex-column mb-3">
+                    <label class="text-middle font-14 font-bold mb-2">اسم الزائر</label>
+                    <app-prime-autocomplete
+                        [formGroup]="form"
+                        controlName="PersonId"
+                        [suggestions]="filteredPersons"
+                        (handleMethod)="searchPersons($event)"
+                        [getMethod]="searchPersons.bind(this)"
+                        field="fullName"
+                    />
+                </div>
+            </div>
+
+            <!-- National ID -->
+            <div class="col-6 md:col-6 lg:col-4">
+                <app-prime-input-text
+                    [formGroup]="form"
+                    controlName="NationalId"
+                    [label]="'الرقم القومي'"
+                />
+            </div>
+
+            
+
+           
+
+            
+
+
+           
+
+           
+
+            <!-- Report Type -->
+            <div class="col-6 md:col-6 lg:col-4">
+                <div class="form-group d-flex flex-column mb-3">
+                    <label class="text-middle font-14 font-bold mb-2">نوع التقرير</label>
+                    <app-prime-autocomplete
+                        [formGroup]="form"
+                        controlName="reportType"
+                        [suggestions]="reportTypes"
+                        (handleMethod)="searchReportTypes($event)"
+                        field="label"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-content-center gap-2 mt-4">
+            <p-button
+                [label]="'تحميل'"
+                severity="success"
+                [disabled]="isGeneratingReport"
+                (onClick)="onExecute()"
+            />
+            <p-button
+                label="حذف"
+                severity="secondary"
+                [disabled]="isGeneratingReport"
+                (onClick)="onClear()"
+            />
+        </div>
+    </form>
+</div>
+
+

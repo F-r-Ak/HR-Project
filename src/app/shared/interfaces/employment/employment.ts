@@ -19,7 +19,7 @@ export interface EmploymentDto extends Lookup, Partial<SharedProperties> {
     currentOrg: string;
     currentDepId: string;
     currentDep: string;
-    jobStartDate: string;
+    secondmentJobDate: string;
     secondmentJobId: string;
     secondmentJob: string;
     secondmentOrgId: string;
@@ -43,11 +43,12 @@ export interface AddEmploymentDto extends Lookup, Partial<SharedProperties> {
     currentJobId: string;
     currentOrgId: string;
     currentDepId: string;
-    jobStartDate: string;
+    secondmentJobDate: string;
     secondmentJobId: string;
     secondmentOrgId: string;
     secondmentDepId: string;
     nominatedJobId: string;
+    
 }
 
 export interface UpdateEmploymentDto extends Lookup, Partial<SharedProperties> {
@@ -63,7 +64,7 @@ export interface UpdateEmploymentDto extends Lookup, Partial<SharedProperties> {
     currentJobId: string;
     currentOrgId: string;
     currentDepId: string;
-    jobStartDate: string;
+    secondmentJobDate: string;
     secondmentJobId: string;
     secondmentOrgId: string;
     secondmentDepId: string;

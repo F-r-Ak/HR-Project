@@ -47,7 +47,9 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
             
             nameAr: ['', Validators.required],
             code: [''],
-            ministryId: [null, Validators.required]
+            ministryId: [],
+
+
         });
     }
 
@@ -55,6 +57,7 @@ export class AddEditOrganizationComponent extends BaseEditComponent implements O
         this.organizationsService.getEditOrganization(this.id).subscribe((city: any) => {
             this.initFormGroup();
             this.form.patchValue(city);
+            this.fetchMinistryDetails(city);
         });
     };
 getMinistries(event: any) {
@@ -64,31 +67,44 @@ getMinistries(event: any) {
                 this.filteredMinistries = res.filter((item: any) => item.nameAr.toLowerCase().includes(query) || item.nameEn.toLowerCase().includes(query));
             },
             error: (err) => {
-                this.alert.error('خطأ فى جلب انواع الجهات');
+                this.alert.error('خطأ فى جلب انواع الهيئات');
             }
         });
     }
 
      onMinistrySelect(event: any) {
-        this.selectedMinistry = event.value;
-        this.form.get('ministryId')?.setValue(this.selectedMinistry.id);
+        this.selectedMinistry = event ?? null;
+        this.form.get('ministryId')?.setValue(this.selectedMinistry?.id ?? null);
+        console.log(this.form.value);
     }
      fetchMinistryDetails(ministryId: any) {
-        this.ministriesService.getMinistry(ministryId).subscribe((ministryDetails: any) => {
-            this.selectedMinistry = ministryDetails?.data || ministryDetails;
-            this.form.patchValue({
-                ministryId: this.selectedMinistry?.id
-            });
+        const id = typeof ministryId === 'object' ? ministryId?.ministryId ?? ministryId?.id : ministryId;
+        this.ministriesService.ministries.subscribe((response: any) => {
+            this.filteredMinistries = Array.isArray(response) ? response : response.data || [];
+            this.selectedMinistry = this.filteredMinistries.find((item: any) => item.id === id) ?? null;
+            this.form.get('ministryId')?.setValue(this.selectedMinistry?.id ?? id ?? null);
         });
     }
     submit() {
         if (this.pageType === 'add')
-            this.organizationsService.add(this.form.value).subscribe(() => {
-                this.closeDialog();
+            this.organizationsService.add(this.form.value).subscribe({
+                next: () => {
+                    this.closeDialog();
+                },
+                error: (err) => {
+                    console.error('Error adding organization:', err);
+                    // Handle error, perhaps show alert
+                }
             });
         if (this.pageType === 'edit')
-            this.organizationsService.update({ id: this.id, ...this.form.value }).subscribe(() => {
-                this.closeDialog();
+            this.organizationsService.update({ id: this.id, ...this.form.value }).subscribe({
+                next: () => {
+                    this.closeDialog();
+                },
+                error: (err) => {
+                    console.error('Error updating organization:', err);
+                    // Handle error
+                }
             });
     }
 

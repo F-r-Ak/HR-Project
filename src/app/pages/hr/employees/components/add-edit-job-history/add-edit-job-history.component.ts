@@ -96,15 +96,27 @@ export class AddEditJobHistoryComponent implements OnInit {
         }
 
         const formValue = this.form.getRawValue();
+        const normalizedBody = {
+            ...formValue,
+            jobStartDate: formValue.jobStartDate ? new Date(formValue.jobStartDate).toISOString() : '',
+            jobEndDate: formValue.jobEndDate ? new Date(formValue.jobEndDate).toISOString() : '',
+            departmentId: formValue.departmentId ?? '',
+            employmentId: this.employmentId
+        } as AddJobHistoryDto & UpdateJobHistoryDto;
+
+        if (!this.employmentId) {
+            console.error('Missing employmentId for job history submission.');
+            return;
+        }
 
         if (this.pageType === 'add') {
-            const body: AddJobHistoryDto = { ...formValue, id: '', employmentId: this.employmentId };
+            const body: AddJobHistoryDto = { ...normalizedBody, id: '' };
             this.jobHistoriesService.add(body).subscribe((res) => {
                 this.jobHistorySubmitted.emit(res.id ?? '');
                 this.dialogRef?.close(res.id);
             });
         } else {
-            const body: UpdateJobHistoryDto = { ...formValue, id: this.jobHistoryId, employmentId: this.employmentId };
+            const body: UpdateJobHistoryDto = { ...normalizedBody, id: this.jobHistoryId };
             this.jobHistoriesService.update(body).subscribe(() => {
                 this.jobHistorySubmitted.emit(this.jobHistoryId);
                 this.dialogRef?.close(this.jobHistoryId);
