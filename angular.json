@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "system-mangement-smart": {
+        "hr-project": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "outputPath": "dist/system-mangement-smart",
+                        "outputPath": "dist/hr-project",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": [
@@ -72,10 +72,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "system-mangement-smart:build:production"
+                            "buildTarget": "hr-project:build:production"
                         },
                         "development": {
-                            "buildTarget": "system-mangement-smart:build:development"
+                            "buildTarget": "hr-project:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
