@@ -38,8 +38,8 @@ export class ReportComponent implements OnInit {
     initFormGroup() {
         this.form = this.formBuilder.group({
             PersonId: [''],
-            NationalId: [''],
-           
+            NationalId: ['', Validators.required],
+
             reportName: ['PersonReport', [Validators.required, Validators.minLength(1)]],
             reportType: ['pdf', [Validators.required]],
             acceptLanguage: ['ar', [Validators.required]]
@@ -139,7 +139,7 @@ export class ReportComponent implements OnInit {
                     console.error('================================');
 
                     let errorMessage = 'حدث خطأ أثناء إنشاء التقرير';
-                    
+
                     if (error.status === 500) {
                         errorMessage = 'خطأ في الخادم: تحقق من صحة بيانات الشخص والرقم القومي';
                     } else if (error.status === 404) {
