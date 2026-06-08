@@ -17,12 +17,12 @@ export enum ClientType {
   providedIn: 'root',
 })
 export class VisitorsNotervice {
-  private hubUrl = 'https://award.aswan.gov.eg/hubs/VisitorNotification';
+  private hubUrl = 'http://192.168.100.217/hubs/VisitorNotification';
   autoScrollEnabled = signal<boolean>(true);
   private hubConnection!: HubConnection;
   private notificationsSubject = new BehaviorSubject<any[]>([]);
   private clientType: ClientType = ClientType.General;
-  
+
   public notifications$: Observable<any[]> = this.notificationsSubject.asObservable();
 
   // Set client type before connecting
@@ -51,14 +51,14 @@ export class VisitorsNotervice {
       // Build URL with client type parameter
       let url = this.hubUrl;
       const params = new URLSearchParams();
-      
+
       if (senderId) {
         params.append('senderId', senderId);
       }
-      
+
       // Add client type to query string
       params.append('clientType', this.clientType);
-      
+
       const queryString = params.toString();
       if (queryString) {
         url += `?${queryString}`;
@@ -99,7 +99,7 @@ export class VisitorsNotervice {
 
   private tryFallbackConnection(url: string, token: string, resolve: any, reject: any): void {
     console.log('🔄 Trying fallback connection with LongPolling...');
-    
+
     const fallbackConnection = new HubConnectionBuilder()
       .withUrl(url, {
         accessTokenFactory: () => token,
@@ -179,7 +179,7 @@ export class VisitorsNotervice {
 
   onNewVisitors(callback: (notifications: any) => void): void {
     this.hubConnection?.on('NewVisitors', callback);
-    
+
   }
 
   onNotificationReceived(callback: (notification: any) => void): void {
@@ -187,9 +187,9 @@ export class VisitorsNotervice {
   }
 
   onVisitorStatusChanged(callback: (visitorData: any) => void): void {
-   
+
     this.hubConnection?.on('VisitorStatusChanged', callback);
-   
+
   }
 
   // Notification handling methods
@@ -197,7 +197,7 @@ export class VisitorsNotervice {
     try {
       const currentNotifications = this.notificationsSubject.value;
       let newNotifications = [];
-      
+
       if (Array.isArray(notifications)) {
         newNotifications = notifications.map(notification => ({
           ...notification,
@@ -215,14 +215,14 @@ export class VisitorsNotervice {
           type: 'new-visitor'
         }];
       }
-      
+
       const updatedNotifications = [...newNotifications, ...currentNotifications];
       console.log('🔄 handleNewVisitors - Before update:', currentNotifications.length);
       console.log('🔄 handleNewVisitors - Adding:', newNotifications.length);
       console.log('🔄 handleNewVisitors - After update:', updatedNotifications.length);
-      
+
       this.notificationsSubject.next(updatedNotifications);
-      
+
     } catch (error) {
       console.error('❌ Error handling new visitors:', error);
     }
@@ -231,10 +231,10 @@ export class VisitorsNotervice {
   private handleUpdateVisitors(notifications: any): void {
     try {
       console.log('🔄 Processing updated visitors:', notifications);
-      
+
       const currentNotifications = this.notificationsSubject.value;
       let updatedNotifications = [...currentNotifications];
-      
+
       if (Array.isArray(notifications)) {
         notifications.forEach(updatedNotification => {
           const index = updatedNotifications.findIndex(n => n.id === updatedNotification.id);
@@ -274,7 +274,7 @@ export class VisitorsNotervice {
           });
         }
       }
-      
+
       this.notificationsSubject.next(updatedNotifications);
       console.log('✅ Updated visitors processed successfully');
     } catch (error) {
@@ -292,10 +292,10 @@ export class VisitorsNotervice {
         read: false,
         type: 'general'
       };
-      
+
       const updatedNotifications = [newNotification, ...currentNotifications];
       this.notificationsSubject.next(updatedNotifications);
-      
+
       console.log('✅ General notification processed:', newNotification);
     } catch (error) {
       console.error('❌ Error handling general notification:', error);
@@ -305,7 +305,7 @@ export class VisitorsNotervice {
   private handleVisitorStatusChanged(visitorData: any): void {
     try {
       console.log('📊 Processing visitor status change:', visitorData);
-      
+
       const currentNotifications = this.notificationsSubject.value;
       const updatedNotifications = currentNotifications.map(notification => {
         if (notification.visitorId === visitorData.visitorId || notification.id === visitorData.id) {
@@ -318,7 +318,7 @@ export class VisitorsNotervice {
         }
         return notification;
       });
-      
+
       this.notificationsSubject.next(updatedNotifications);
       console.log('✅ Visitor status change processed');
     } catch (error) {
@@ -371,7 +371,7 @@ export class VisitorsNotervice {
         console.log('✅ Notification marked as read');
         // Update local state
         const currentNotifications = this.notificationsSubject.value;
-        const updatedNotifications = currentNotifications.map(notification => 
+        const updatedNotifications = currentNotifications.map(notification =>
           notification.id === id ? { ...notification, read: true } : notification
         );
         this.notificationsSubject.next(updatedNotifications);
@@ -446,7 +446,7 @@ export class VisitorsNotervice {
       read: false,
       type: 'test'
     };
-    
+
     console.log('🧪 Adding test notification from service...');
     this.handleGeneralNotification(testNotification);
   }
@@ -471,15 +471,15 @@ export class VisitorsNotervice {
   // Method to switch client type dynamically
   async switchClientType(newType: ClientType, token: string): Promise<boolean> {
     console.log(`🔄 Switching client type from ${this.clientType} to ${newType}`);
-    
+
     // Stop current connection
     if (this.isConnected()) {
       await this.stopConnection();
     }
-    
+
     // Set new client type
     this.setClientType(newType);
-    
+
     // Start new connection with new type
     const senderId = this.generateGUID();
     return await this.startConnection(token, senderId);
