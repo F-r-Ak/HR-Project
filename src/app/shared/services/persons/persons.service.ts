@@ -42,31 +42,25 @@ export class PersonsService extends HttpService {
     remove(id: string) {
         return this.delete({ apiName: `delete/`, showAlert: true }, id);
     }
-     generateReport(body: any): Observable<any> {
-        // Convert body to query parameters
-        const params = this.buildQueryParams(body);
-        return this.get<any>({ apiName: 'getreport', params });
-    }
-
     downloadReport(body: any): Observable<Blob> {
-        // Convert body to query parameters and download as blob
         const params = this.buildQueryParams(body);
         const queryString = new URLSearchParams(params).toString();
+        const headers: any = {};
+        if (body.acceptLanguage) {
+            headers['Accept-Language'] = body.acceptLanguage;
+        }
         return this.http.get(`${this.domainName}${this.baseUrl}getreport?${queryString}`, {
-            responseType: 'blob'
+            responseType: 'blob',
+            headers
         });
     }
 
-    private buildQueryParams(body: any): any {
-        const params: any = {};
-
-        // Map form fields to API parameters
-        if (body.reportName) params.ReportName = body.reportName;
-        if (body.reportType) params.ReportType = body.reportType;
-        if (body.acceptLanguage) params.AcceptLanguage = body.acceptLanguage;
-        if (body.PersonId) params.PersonId = body.PersonId;
-        if (body.NationalId) params.NationalId = body.NationalId;
-       
+    private buildQueryParams(body: any): Record<string, string> {
+        const params: Record<string, string> = {};
+        if (body.PersonId) params['PersonId'] = body.PersonId;
+        if (body.NationalId) params['NationalId'] = body.NationalId;
+        if (body.reportName) params['ReportName'] = body.reportName;
+        if (body.reportType) params['ReportType'] = body.reportType;
         return params;
     }
 }

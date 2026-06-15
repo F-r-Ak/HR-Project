@@ -46,4 +46,8 @@ export class TrainingCoursesService extends HttpService {
     remove(id: string) {
         return this.delete({ apiName: `delete/`, showAlert: true }, id);
     }
+
+    deleteAttachments(ids: string[]) {
+        return this.delete({ apiName: `deleterange/attachments`, showAlert: true }, ids);
+    }
 }

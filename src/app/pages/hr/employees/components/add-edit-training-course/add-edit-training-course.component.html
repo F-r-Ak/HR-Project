@@ -29,8 +29,8 @@
                     @for (att of existingAttachments; track att.id) {
                         <div class="flex items-center justify-between border rounded px-3 py-2 mb-2 bg-white">
                             <div class="flex items-center gap-2">
-                                <i [class]="getFileIcon(att.name)" class="text-lg"></i>
-                                <span class="text-sm truncate max-w-xs">{{ att.name }}</span>
+                                <i [class]="getFileIcon(att.fileName)" class="text-lg"></i>
+                                <span class="text-sm truncate max-w-xs">{{ att.fileName }}</span>
                             </div>
                             <i class="pi pi-trash text-red-500 cursor-pointer" (click)="removeExistingAttachment(att)"></i>
                         </div>
