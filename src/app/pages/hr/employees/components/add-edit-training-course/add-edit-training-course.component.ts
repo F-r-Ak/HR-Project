@@ -8,7 +8,6 @@ import {
     SubmitButtonsComponent,
     TrainingCoursesService
 } from '../../../../../shared';
-import { AttachmentService } from '../../../../../shared/services/attachment/attachment.service';
 import { CardModule } from 'primeng/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -41,7 +40,6 @@ export class AddEditTrainingCourseComponent implements OnInit {
     private dialogConfig = inject(DynamicDialogConfig, { optional: true });
     private dialogRef = inject(DynamicDialogRef, { optional: true });
     trainingCoursesService = inject(TrainingCoursesService);
-    attachmentService = inject(AttachmentService);
 
     ngOnInit(): void {
         if (this.dialogConfig?.data) {
@@ -95,8 +93,8 @@ export class AddEditTrainingCourseComponent implements OnInit {
     }
 
     removeExistingAttachment(attachment: Attachment): void {
-        const id = attachment.attachId || attachment.id;
-        this.filesToDelete.push(id);
+        const attachId = attachment.attachId;
+        this.filesToDelete.push(attachId);
         this.existingAttachments = this.existingAttachments.filter((a) => a.id !== attachment.id);
     }
 
@@ -108,8 +106,10 @@ export class AddEditTrainingCourseComponent implements OnInit {
             return;
         }
 
-        // Delete removed attachments first (fire-and-forget)
-        this.filesToDelete.forEach((id) => this.attachmentService.deleteAttachment(id).subscribe());
+        // Delete removed attachments in a single batch call before saving
+        if (this.filesToDelete.length) {
+            this.trainingCoursesService.deleteAttachments(this.filesToDelete).subscribe();
+        }
 
         const formValue = this.form.getRawValue();
         const formData = new FormData();
